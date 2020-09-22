@@ -1,0 +1,160 @@
+<div class="app-page padding-tb-20">
+    <div class="page-width page-container">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+            <app-page-title super="عهد الموظفين" [title]="pageTitle"></app-page-title>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-sm-12 margin-bottom-5 order-2 padding-right-left-21">
+              <app-form-navigator 
+                [rank]="rank" [totalCount]="totalCount" [isActive]="isEdit" 
+                (onReset)="reset()" (onDelete)="delete()" 
+                (onFirst)="getFirst()" (onLast)="getLast()" 
+                (onPrevious)="getPrevious()" (onNext)="getNext()" [permission]="permission">
+              </app-form-navigator>
+          </div>
+          <div class="col-md-6 col-sm-12 text-left margin-bottom-5 order-1 padding-right-left-21">
+              <button title="قائمة {{pageTitle}}" class="master-form-button" [routerLink]="menuUrl">
+                  <span class="hideTitleOSS"> قائمة {{pageTitle}} </span>
+                  <i class="fa fa-list margin-right-10 adjustMarginOSS"></i>
+              </button>
+            </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-12">
+            <form name="form" #form="ngForm" class="master-form">
+              <hr>
+              <div class="row">
+                <div class="col-md-4 form-group">
+                  <label>رقم العهدة</label>
+                  <input class="form-control" type="number" name="serial" disabled [value]="custodyTrx.serial">
+                </div>
+                <div class="col-md-4 form-group">
+                  <label>التاريخ <sup>*</sup></label>
+                  <gregorian-hijri-calendar #datepicker
+                  [gDate]="custodyTrx.date" [isRequired]="true" [disabled]="false" [hidden]="(isEdit && !permission.update)"
+                    (onSelect)="selectDate($event)">
+                  </gregorian-hijri-calendar>
+                  <input *ngIf="isEdit && !permission.update" class="form-control" [value]="custodyTrx.date|appDate" readonly>
+                </div>
+                <div class="form-group col-md-4">
+                  <label>صاحب الصلاحية</label>
+                  <app-dropdown-list #ownerDropdown
+                      [selectedItemId]="custodyTrx.ownerId" [list]="employees" 
+                      palceholder="اختر صاحب الصلاحية" [busyLoading]="dropdownsLoading"
+                      idField="empId" textField="empName" 
+                      pageSize="7" [isRequired]="false" [isReadonly]="isEdit && !permission.update"
+                      (onSelect)="selectOwner($event)"> 
+                  </app-dropdown-list>
+                  <!-- <select name="ownerId" class="form-control" [(ngModel)]="custodyTrx.ownerId" 
+                    [ngClass]="{'readonly': isEdit && !permission.update}"
+                    [disabled]="isEdit && !permission.update">
+                    <option *ngIf="!dropdownsLoading" [value]="undefined" disabled selected>
+                      اختر صاحب الصلاحية
+                    </option>
+                    <option *ngIf="dropdownsLoading" [value]="undefined">جارى التحميل...</option>
+                    <option *ngFor="let employee of employees" [value]="employee.empId">
+                      {{employee.empName}}
+                    </option>
+                  </select> -->
+                </div>
+                <div class="col-md-4 form-group">
+                  <label> من موظف <sup>*</sup></label>
+                  <app-dropdown-list #empDropdown
+                      [selectedItemId]="custodyTrx.empId" [list]="employees" 
+                      palceholder="اختر من موظف" [busyLoading]="dropdownsLoading"
+                      idField="empId" textField="empName" 
+                      pageSize="7" [isRequired]="true" [isReadonly]="isEdit && !permission.update"
+                      (onSelect)="selectEmp($event)"> 
+                  </app-dropdown-list>
+                  <!-- <select name="employeeId" class="form-control" [(ngModel)]="custodyTrx.empId"
+                    [ngClass]="{'readonly': isEdit && !permission.update}"
+                    [disabled]="isEdit && !permission.update">
+                    <option *ngIf="!dropdownsLoading" [value]="undefined" disabled selected>
+                      اختر من موظف
+                    </option>
+                    <option *ngIf="dropdownsLoading" [value]="undefined">جارى التحميل...</option>
+                    <option *ngFor="let employee of employees" [value]="employee.empId">
+                      {{employee.empName}}
+                    </option>
+                  </select> -->
+                </div>
+                <div class="col-md-4 form-group" *ngIf="pageCustodyType === custodyTypes.transfere">
+                  <label> إلى موظف</label>
+                  <app-dropdown-list #toEmpDropdown
+                      [selectedItemId]="custodyTrx.toEmpId" [list]="employees" 
+                      palceholder="اختر إلى موظف" [busyLoading]="dropdownsLoading"
+                      idField="empId" textField="empName" 
+                      pageSize="7" [isRequired]="false" [isReadonly]="isEdit && !permission.update"
+                      (onSelect)="selectToEmp($event)"> 
+                  </app-dropdown-list>
+                  <!-- <select name="toEmployeeId" class="form-control" [(ngModel)]="custodyTrx.toEmpId"
+                    [ngClass]="{'readonly': isEdit && !permission.update}"
+                    [disabled]="isEdit && !permission.update">
+                    <option *ngIf="!dropdownsLoading" [value]="undefined" disabled selected>
+                      اختر إلى موظف
+                    </option>
+                    <option *ngIf="dropdownsLoading" [value]="undefined">جارى التحميل...</option>
+                    <option *ngFor="let employee of employees" [value]="employee.empId">
+                      {{employee.empName}}
+                    </option>
+                  </select> -->
+                </div>
+                <div class="col-md-4 form-group">
+                  <label> رئيس الجهة </label>
+                  <app-dropdown-list #branchManagerDropdown
+                      [selectedItemId]="custodyTrx.branchManagerId" [list]="employees" 
+                      palceholder="اختر رئيس الجهة" [busyLoading]="dropdownsLoading"
+                      idField="empId" textField="empName" 
+                      pageSize="7" [isRequired]="false" [isReadonly]="isEdit && !permission.update"
+                      (onSelect)="selectBranchManager($event)"> 
+                  </app-dropdown-list>
+                  <!-- <select id="applicant" name="managerId" class="form-control" [(ngModel)]="custodyTrx.branchManagerId"
+                    [ngClass]="{'readonly': isEdit && !permission.update}"
+                    [disabled]="isEdit && !permission.update">
+                    <option *ngIf="!dropdownsLoading" [value]="undefined" disabled selected>
+                      اختر رئيس الجهة
+                    </option>
+                    <option *ngIf="dropdownsLoading" [value]="undefined">جارى التحميل...</option>
+                    <option *ngFor="let employee of employees" [value]="employee.empId">
+                      {{employee.empName}}
+                    </option>
+                  </select> -->
+                </div>
+                <div class="col-12 form-group">
+                  <label> الملاحظات</label>
+                  <textarea rows="2" autocomplete="off" maxlength="300" class="form-control" type="text" name="notes"
+                   [(ngModel)]="custodyTrx.notes" [readonly]="isEdit && !permission.update"></textarea>
+                </div>
+              </div>
+              <hr>
+              <div class="row" *ngIf="!isEdit || (isEdit && permission.update)">
+                <div class="form-group col-md-12 text-center">
+                  <button class="master-form-submit-button" [disabled]="form.invalid || isDropdownsInvalid || busySaving" (click)="save()">
+                    حفظ <i *ngIf="busySaving" class="fa fa-spinner spinner-spin"></i>
+                  </button>
+                  <button class="master-form-cancel-button margin-right-10" (click)="cancel()">
+                    إلغاء
+                  </button> 
+                </div>
+              </div>
+              <div class="row" *ngIf="isEdit">
+                <div class=" form-group col-md-12 col-sm-12 col-xs-12 ">
+                  <label for="items" class="col-form-label font-size-16"> الأصناف </label>
+                  <app-custody-register-transfere-items [orderSerial]="custodyTrx.serial" [trxTypeId]="custodyTrx.type"
+                    [pageCustodyType]="pageCustodyType" [fromEmpId]="custodyTrx.empId"></app-custody-register-transfere-items>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 text-left">
+                  <app-permissions-string [permission]="permission"></app-permissions-string>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

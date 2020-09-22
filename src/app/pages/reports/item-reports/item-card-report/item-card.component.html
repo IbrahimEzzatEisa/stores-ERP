@@ -1,0 +1,97 @@
+<div class="app-page padding-tb-20">
+    <div class="page-width page-container">
+        <form name="form" #form="ngForm" class="container-fluid master-form">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <app-page-title super="تقارير الأصناف" title=" بطاقة صنف "></app-page-title>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 text-left form-group">
+                    <button class="btn-theme btn-theme-OSS btn-alt-theme margin-right-4-OSS margin-right-5" title="طباعة" 
+                        [disabled]="busyPrinting" (click)="printReport()">
+                        <i class="action-icon fa fa-print fa-action-md"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 form-group">
+                    <label class="col-form-label"><b> من صنف </b></label>
+                </div>
+                <div class="col-md-3 form-group">
+                    <app-dropdown-list
+                        [selectedItemId]="fromItemGroupID" [list]="groups" 
+                        palceholder="إختر المجموعة" [busyLoading]="busyLoadingItemGroups"
+                        idField="itemGroupId" textField="itemGroupName" 
+                        pageSize="7" [isRequired]="false"
+                        (onSelect)="selectFromItemGroupId($event)"> 
+                    </app-dropdown-list>
+                </div>
+                <div class="col-md-3 form-group">
+                    <app-dropdown-list
+                        [selectedItemId]="fromItemID" [list]="fromItems" 
+                        palceholder="إختر الصنف" [busyLoading]="busyLoadingFromItems"
+                        idField="itemId" textField="itemName" 
+                        pageSize="7" [isRequired]="false"
+                        (onSelect)="selectFromItemId($event)"> 
+                    </app-dropdown-list>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2  form-group">
+                    <label class="col-form-label"><b> إلى صنف </b></label>
+                </div>
+                <div class="col-md-3 form-group">
+                    <app-dropdown-list
+                        [selectedItemId]="toItemGroupID" [list]="groups" 
+                        palceholder="إختر المجموعة" [busyLoading]="busyLoadingItemGroups"
+                        idField="itemGroupId" textField="itemGroupName" 
+                        pageSize="7" [isRequired]="false"
+                        (onSelect)="selectToItemGroupId($event)"> 
+                    </app-dropdown-list>
+                </div>
+                <div class="col-md-3 form-group">
+                    <app-dropdown-list
+                        [selectedItemId]="toItemID" [list]="toItems" 
+                        palceholder="إختر الصنف" [busyLoading]="busyLoadingToItems"
+                        idField="itemId" textField="itemName" 
+                        pageSize="7" [isRequired]="false"
+                        (onSelect)="selectToItemId($event)"> 
+                    </app-dropdown-list>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2  form-group">
+                    <label class="col-form-label"><b> من تاريخ </b></label>
+                </div>
+                <div class="col-md-3 form-group ">
+                    <gregorian-hijri-calendar [gDate]="fromDate" [disabled]="false"
+                        (onSelect)="selectFromDate($event)">
+                    </gregorian-hijri-calendar>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2  form-group">
+                    <label class="col-form-label"><b> إلى تاريخ </b></label>
+                </div>
+                <div class="col-md-3 form-group ">
+                    <gregorian-hijri-calendar [gDate]="toDate" [disabled]="false"
+                        (onSelect)="selectToDate($event)">
+                    </gregorian-hijri-calendar>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="defaultUnchecked" name="defaultExampleRadios" (change)="optItemCard2 = false">
+                        <label class="custom-control-label" for="defaultUnchecked"><b>بطاقة صنف</b> </label>
+                    </div>
+                    <div class="form-group custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="defaultChecked" name="defaultExampleRadios" (change)="optItemCard2 = true">
+                        <label class="custom-control-label" for="defaultChecked"><b>بطاقة مراقبة صنف</b> </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

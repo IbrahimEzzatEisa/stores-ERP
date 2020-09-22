@@ -1,0 +1,32 @@
+<div class="app-page padding-tb-20">
+  <div class="page-width page-container">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 col-sm-6 form-group">
+          <p class="page-title title-line-height-OSS">
+            <span class="title-parent">المستودعات</span>
+            <span class="title-arrow"><i class="fa fa-chevron-left"></i></span>
+            <span class="title-current-page"> الموظفين</span>
+          </p>
+        </div>
+      </div>
+      <app-code-name-table #table
+        codeLabel='الكود'
+        codeKey='empId'
+        nameLabel='الاسم'
+        nameKey='empName'
+        [permissionId]="permissionId"
+        [extraColumn1]='branchesColumn'
+        [itemsList]='componentList'
+        [busyCreating]='busyCreating'
+        [busyPrinting]='busyPrinting'
+        (getAllFun)='getAll()'
+        (createFun)='create($event)'
+        (updateFun)='update($event)'
+        (deleteFun)='delete($event)'
+        (printFun)='print()'
+        [pattern]="pattern"></app-code-name-table>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,111 @@
+<div class="app-page padding-tb-20">
+  <div class="page-width page-container">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-12 col-sm-12">
+                <app-page-title super="الأكواد الرئيسية" title="المستخدمين"></app-page-title>
+              </div>
+          </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12 margin-bottom-5 order-2 padding-right-left-21">
+                    <app-form-navigator [rank]="rank" [totalCount]="totalCount" [isActive]="isEdit" (onReset)="reset()"
+                        (onDelete)="delete()" (onFirst)="getFirst()" (onLast)="getLast()" (onPrevious)="getPrevious()"
+                        (onNext)="getNext()">
+                    </app-form-navigator>
+                </div>
+                <div class="col-md-6 col-sm-12 text-left margin-bottom-5 order-1 padding-right-left-21">
+                    <button title="قائمة  مذكرات الاستلام" class="master-form-button" routerLink="/pages/tools/users/list">
+                        <span class="hideTitleOSS"> قائمة المستخدمين </span>
+                        <i class="fa fa-list margin-right-10 adjustMarginOSS"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-12">
+                    <div class="container-fluid">
+                        <form name="form" #form="ngForm" class="master-form">
+                            <hr>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label>كود المستخدم</label>
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <input class="form-control" type="text" name="userId" placeholder="ادخل كود المستخدم" 
+                                    [ngClass]=" {'is-invalid':userId.dirty && userId.invalid}" #userId="ngModel"
+                                    [(ngModel)]="user.userId" 
+                                    [disabled]="isEdit"
+                                    [readonly]="isEdit && !permission.update" autocomplete="off"
+                                    (blur)="getById(user.userId)">     
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label>اسم المستخدم</label>
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <input autocomplete="off" class="form-control" type="text" 
+                                        name="userName" placeholder="ادخل اسم المستخدم" #userName="ngModel"
+                                        [ngClass]=" {'is-invalid':userName.invalid && (userName.dirty || userName.touched)}"
+                                        [(ngModel)]="user.userName"
+                                        [readonly]="isEdit && !permission.update">    
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label>فتح شاشة واحدة فقط</label>
+                                </div>
+                                <app-dropdown-list #onlyMenuDropdown
+                                    [selectedItemId]="user.onlyMenuId" [list]="menusDropDown" 
+                                    palceholder="اختر الشاشة" [busyLoading]="dropdownsLoading"
+                                    idField="menuId" textField="caption" 
+                                    pageSize="10" [isRequired]="false" [isReadonly]="isEdit && !permission.update"
+                                    (onSelect)="selectOnlyMenu($event)"> 
+                                </app-dropdown-list>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">    
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <div class="form-group col-md-2">
+                                    <label class="checkbox-container margin-top-5">
+                                        <input type="checkbox" [disabled]="isEdit && !permission.update" [(ngModel)]="user.notActive" name="notActive">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    </div>
+                                    <div class="form-group col-md-10 checkboxPadding">
+                                        <label>إيقاف التعامل</label>  
+                                    </div> 
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">    
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <div class="form-group col-md-2">
+                                        <label class="checkbox-container margin-top-5">
+                                            <input type="checkbox" [disabled]="isEdit && !permission.update" [(ngModel)]="user.ignoreAutoSerial" name="ignoreAutoSerial">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <div class="form-group col-md-10 checkboxPadding">
+                                        <label>غير مقيد بالمسلسل</label>  
+                                    </div> 
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row" *ngIf="!isEdit || (isEdit && permission.update)">
+                                <div class="form-group col-md-12 text-center">
+                                    <button class="master-form-submit-button" [disabled]="form.invalid || busySaving" (click)="save()">
+                                        حفظ <i *ngIf="busySaving" class="fa fa-spinner spinner-spin"></i>
+                                    </button>
+                                    <button class="master-form-cancel-button margin-right-10" (click)="cancel()">إلغاء
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

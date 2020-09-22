@@ -1,0 +1,109 @@
+<div class="main-container ace-save-state hideOnsmallScreen"
+  id="main-container">
+  <div id="sidebar"
+    class="sidebar h-sidebar navbar-collapse ace-save-state sidebar-relative lower-highlight collapse show">
+    <ul class="nav nav-list">
+      <li class="baladyaName">
+        <p>
+          {{settingsObj.companyName}}
+        </p>
+      </li>
+      <li class="hover"
+        *ngFor="let menuItem of menuItems"
+        [hidden]="!haveChildren(menuItem) && !menuItem.dontHaveChildren">
+        <a *ngIf="menuItem.isLink"
+          class="dropdown-toggle clickable"
+          [routerLink]="menuItem.path"
+          [ngClass]="{'noDropDown': menuItem.dontHaveChildren}">
+          <i *ngIf="menuItem.data.icon"
+            class="menu-icon {{menuItem.data.icon}}"></i>
+          <span class="menu-text"> {{menuItem.data.title}} </span>
+          <b *ngIf="menuItem.data.children"
+            class="arrow fas fa-angle-down"></b>
+        </a>
+        <a *ngIf="!menuItem.isLink"
+          class="dropdown-toggle clickable"
+          [ngClass]="{'noDropDown': menuItem.dontHaveChildren}">
+          <i *ngIf="menuItem.data.icon"
+            class="menu-icon {{menuItem.data.icon}}"></i>
+          <span class="menu-text"> {{menuItem.data.title}} </span>
+          <b *ngIf="menuItem.data.children"
+            class="arrow fas fa-angle-down"></b>
+        </a>
+        <b *ngIf="menuItem.data.children"
+          class="arrow"></b>
+        <ul *ngIf="menuItem.data.children"
+          class="submenu">
+          <app-menu-list-item class="menuItemComponent"
+            *ngFor="let subItem of menuItem.data.children"
+            [menuItem]="subItem"></app-menu-list-item>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="showOnsmallScreen">
+  <button class="menu-toggle-btn collapsed showOnsmallScreen"
+    type="button"
+    data-target="#nav-list-collapse"
+    data-toggle="collapse"
+    aria-expanded="false">
+    <i class="fa fa-2x fa-bars display-collapsed"></i>
+    <i class="fa fa-2x fa-times display-opened"></i>
+  </button>
+  <div id="nav-list-collapse"
+    class="collapse"
+    aria-labelledby="dropdownMenuButton">
+    <div class="baladyaName">
+      <p>
+        {{settingsObj.companyName}}
+      </p>
+    </div>
+    <div *ngFor="let menuItem of menuItems"
+      [hidden]="!haveChildren(menuItem)">
+      <p *ngIf="!menuItem.isLink"
+        class="nav-collapse-title noselect">
+        <i *ngIf="menuItem.data.icon"
+          class="menu-icon margin-left-10 opacity-90 {{menuItem.data.icon}}"></i>
+        <span>{{menuItem.data.title}}</span>
+      </p>
+      <a *ngIf="menuItem.isLink"
+        class="nav-collapse-link noselect"
+        (click)="hideNav()"
+        [routerLink]="menuItem.path">
+        <i *ngIf="menuItem.data.icon"
+          class="menu-icon margin-left-10 opacity-90 {{menuItem.data.icon}}"></i>
+        <span>{{menuItem.data.title}}</span>
+      </a>
+      <div *ngFor="let submenuItem of menuItem.data.children">
+        <a *ngIf="submenuItem.path"
+          class="nav-collapse-link"
+          (click)="hideNav()"
+          [routerLink]="submenuItem.path"
+          [hidden]="!getPermission(submenuItem.data.permissionName)">
+          <i *ngIf="submenuItem.data.icon"
+            class="menu-icon margin-left-10 opacity-90 {{submenuItem.data.icon}}"></i>
+          <span>{{submenuItem.data.title}}</span>
+        </a>
+        <p *ngIf="!submenuItem.path"
+          class="nav-collapse-title noselect text-right">
+          <i *ngIf="submenuItem.data.icon"
+            class="menu-icon margin-left-10 opacity-90 {{submenuItem.data.icon}}"></i>
+          <span>{{submenuItem.data.title}}</span>
+        </p>
+        <div *ngFor="let subSubMenuItem of submenuItem.data.children">
+          <a *ngIf="subSubMenuItem.path"
+            class="nav-collapse-link"
+            (click)="hideNav()"
+            [routerLink]="subSubMenuItem.path"
+            [hidden]="!getPermission(subSubMenuItem.data.permissionName)">
+            <i *ngIf="subSubMenuItem.data.icon"
+              class="menu-icon margin-left-10 opacity-90 {{subSubMenuItem.data.icon}}"></i>
+            <span>{{subSubMenuItem.data.title}}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

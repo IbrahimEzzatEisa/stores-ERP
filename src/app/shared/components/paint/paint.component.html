@@ -1,0 +1,83 @@
+<div class="drawSigniture" #paint>
+  <div class="modal-header header-color text-white">
+      <h4 class="modal-title modalFont">الرسام</h4>
+  </div>
+  <div class="container-fluid"> 
+      <div class="row bg-dark">
+                    <div class="col-md-6 colors text-white">
+                      <div class="boxColor btn" id="red" (click)="selColor('#ff0000')"></div>
+                      <div class="boxColor btn" id="yellow" (click)="selColor('#ffff00')"></div>
+                      <div class="boxColor btn" id="blue"(click)="selColor('#0000ff')"></div>
+                      <div class="boxColor btn" id="black"(click)="selColor('#000000')"></div>
+                      <div class="boxColor btn" id="white"(click)="selColor('#ffffff')"></div>
+                      <div class="boxColor btn" id="pink"(click)="selColor('#ffc0cb')"></div>
+                      <div class="boxColor btn" id="green"(click)="selColor('#00ff00')"></div>
+                      اللون<input #colorPicker id="Picker" class="btn colorPicker boxColor Noborder" type="color" value="#1a9b95" (change)="
+                      sel=false;setCurrentColor()">
+                    </div><div class="col-md-6 colors text-white text-left">
+                      حجم الخط <select id="selWidth" #selWidth class="btn btn-sm bg-white">
+                              <option value="1" selected="selected">1</option>
+                              <option value="3">3</option>
+                              <option value="5">5</option>
+                              <option value="7">7</option>
+                              <option value="9">9</option>
+                              <option value="11">11</option>
+                          </select><span>&nbsp;&nbsp;</span>
+                          <button (click) ="freeD()" type="button" class="btn-action-print"><i [style.color]="freeDraw ? currentColor : 'rgba(255, 255, 255, 0.85)'" class="fas fa-pencil-alt"></i></button>
+                          <button (click) ="rect()" type="button" class="btn-action-print"><i [style.color]="rectDraw ? currentColor : 'rgba(255, 255, 255, 0.85)'" class="far fa-square"></i></button>
+                          <button (click) ="circle()" type="button" class="btn-action-print"><i [style.color]="circleDraw ? currentColor : 'rgba(255, 255, 255, 0.85)'" class="far fa-circle"></i></button>
+                          <button (click) ="selErase()" type="button" class="btn-action-print"><i [style.color]="eraseDraw ? 'white' : 'rgba(255, 255, 255, 0.85)'" class="fa fa-eraser"></i></button>
+                          <button (click) ="unDo()" [disabled]="disableUnDo()"
+                          type="button" class="btn-action-print"><i class="fa fa-undo text-white flipV"></i></button>
+                          <button (click) ="reDo()" [disabled]="disableReDo()"
+                          type="button" class="btn-action-print"><i class="fa fa-undo text-white"></i></button>
+                          <button (click)="openConfirmSave()" type="button" class="btn-action-print" data-toggle="modal"><i class="fa fa-save text-white"></i></button>
+                          <button (click)="openConfirmDelete()" type="button" class="btn-action-print" data-toggle="modal"><i class="fa fa-trash text-white"></i></button>
+                        </div>
+  </div>
+    
+      <div class="text-center">
+          <canvas #myCanvas style="border:1px solid lightgrey;"
+                  (mousedown)="mouseDown($event)" (touchstart)="mouseDown($event)"
+                  (mousemove)="mouseMove($event)" (touchmove)="mouseMove($event)" 
+                  (mouseup)="mouseUp($event)" (touchend)="mouseUp($event)"
+                  (mouseleave)="mouseLeave($event)" (touchend)="mouseLeave($event)"
+                  (window:resize)="onResize()"
+                  ></canvas>
+      </div>
+</div>
+<ng-template class="modal fade" id="delete" #delete>
+    <div class="modal-content">
+      <div class="modal-header header-theme-danger">
+        <h4 class="modal-title text-white fontFamily">حفظ التغيرات</h4>
+        <button type="button" class="close" aria-label="Close" (click)="ignore()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="fontFamily">هل تريد الحذف بدون حفظ؟</p>
+      </div>
+      <div class="modal-footer fontFamily">
+        <input (click)="remove()" type="button" class="btn-theme btn-theme-danger margin-left-10 min-width-60" value="نعم">
+        <input (click)="openConfirmSave()" type="button" class="btn-theme btn-dark min-width-60 border-radius-0" value="لا">
+      </div>
+   </div>
+</ng-template>
+
+<ng-template class="modal fade" id="edit" #edit>
+    <div class="modal-content">
+      <div class="modal-header header-theme-primary">
+        <h4 class="modal-title text-white fontFamily">حفظ التغيرات</h4>
+        <button type="button" class="close" aria-label="Close" (click)="ignore()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="fontFamily">هل تريد حفظ التغييرات؟</p>
+      </div>
+      <div class="modal-footer fontFamily">
+        <input (click)="save()" type="button" class="btn-theme btn-prim-theme margin-left-10" value="نعم">
+        <input (click)="ignore()" type="button" class="btn-theme btn-prim-theme margin-left-10" value="لا">
+      </div>
+    </div>
+</ng-template>

@@ -1,0 +1,12 @@
+
+<div class="inline-block">
+    <p class="regular-text margin-bottom-0 text-left" style="font-size: 12px">
+        لديك الصلاحية لـ
+        <span *ngIf="false" class="margin-lr-3">الإظهار</span> 
+        <span *ngIf="false" class="margin-lr-3">الإستعراض</span> 
+        <span *ngIf="_permissions.insert" class="margin-lr-3 text-theme">الإضافة</span> 
+        <span *ngIf="_permissions.update" class="margin-lr-3 text-theme">التعديل</span> 
+        <span *ngIf="_permissions.delete" class="margin-lr-3 text-theme">الحذف</span> 
+        <span *ngIf="_permissions.print"  class="margin-lr-3 text-theme">الطباعة</span>
+    </p>
+</div>

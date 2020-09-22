@@ -1,0 +1,382 @@
+
+  /*---------------------------------------------*/
+  input {
+    outline: none;
+    border: none;
+}
+
+input:focus::-webkit-input-placeholder { color:transparent; }
+input:focus:-moz-placeholder { color:transparent; }
+input:focus::-moz-placeholder { color:transparent; }
+input:focus:-ms-input-placeholder { color:transparent; }
+
+
+input::-webkit-input-placeholder { color: rgba(85, 85, 85, 0.65);}
+input:-moz-placeholder { color: rgba(85, 85, 85, 0.65);}
+input::-moz-placeholder { color: rgba(85, 85, 85, 0.65);}
+input:-ms-input-placeholder { color: rgba(85, 85, 85, 0.65);}
+
+
+/*---------------------------------------------*/
+button {
+    outline: none !important;
+    border: none;
+    background: transparent;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.input-border {
+  border: 1px solid #ced4da
+}
+.modal-btn {
+  font-family: DroidKufi-Regular;
+}
+
+/*//////////////////////////////////////////////////////////////////
+[ login ]*/
+
+.limiter {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.container-login100 {
+  width: 100%;  
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  z-index: 1;  
+}
+
+.container-login100::before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.55);
+}
+
+.wrap-login100 {
+  width: 390px;
+  border-radius: 0px;
+  overflow: hidden;
+
+  background: transparent;
+}
+
+
+/*------------------------------------------------------------------
+[ Form ]*/
+
+.login100-form {
+  width: 100%;
+  border-radius: 0px;
+  background-color: #fff;
+  border:1px solid rgba(0, 0, 0, 0.973);
+  box-shadow: 1px 1px 20px 2px rgba(0, 0, 0, 0.3)!important;
+}
+
+.system-title {
+  color: rgba(255, 255, 255, 0.8)!important;
+  padding-top: 0px;
+  padding-bottom: 31px;
+  background: rgba(0, 0, 0, 0.9);
+  margin-bottom: 50px;
+  border-radius: 0px;
+  min-height: 115px;
+  overflow: hidden;
+}
+.system-title .system-name {
+  color: #555555!important;
+  background: rgba(255, 255, 255, 0.75);
+  padding: 10px 0px;
+  margin-bottom: 21px;
+}
+
+.login100-form-title {
+  font-family: DroidKufi-Bold;
+  font-size: 28px;
+  color: #fff;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+
+  display: block;
+}
+
+
+
+/*------------------------------------------------------------------
+[ Input ]*/
+
+.wrap-input100 {
+  width: 100%;
+  position: relative;
+  border-bottom: 1px solid #e6e6e6;
+  padding: 0;
+  margin-bottom: 18px;
+}
+.wrap-input100 .left-icon {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  font-size: 24px;
+  padding: 10px 30px;
+  color: rgba(85, 85, 85, 0.35);
+}
+.wrap-input100 .left-icon.succ {
+  color: #28a745 !important
+}
+
+.input100 {
+  font-family: DroidKufi-Regular;
+  font-size: 20px;
+  color: #555555;
+  line-height: 1.2;
+
+  display: block;
+  width: 100%;
+  height: 50px;
+  background: transparent;
+  padding: 0 10px 0 80px;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+/*---------------------------------------------*/ 
+.focus-input100 {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.focus-input100::before {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1px;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+
+  background: #438EB9;
+  /* background: -webkit-linear-gradient(left, #a445b2, #438EB9, #fa4299);
+  background: -o-linear-gradient(left, #a445b2, #438EB9, #fa4299);
+  background: -moz-linear-gradient(left, #a445b2, #438EB9, #fa4299);
+  background: linear-gradient(to right, #a445b2, #438EB9, #fa4299); */
+}
+
+.focus-input100::after {
+  font-family: Linearicons-Free;
+  font-size: 18px;
+  color: #999999;
+
+  content: attr(data-placeholder);
+  display: block;
+  width: 100%;
+  position: absolute;
+  top: 40px;
+  left: 35px;
+ 
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.input100:focus {
+  padding-left: 60px;
+}
+
+.input100:focus + .focus-input100::after {
+  left: 23px;
+  color: #438EB9;
+}
+
+.input100:focus + .focus-input100::before {
+  width: 100%;
+}
+
+.has-val.input100 + .focus-input100::after {
+  left: 23px;
+  color: #438EB9;
+}
+
+.has-val.input100 + .focus-input100::before {
+  width: 100%;
+}
+
+.has-val.input100 {
+  padding-left: 60px;
+}
+
+.loginMessage {
+  font-size: 15px;
+  padding: 0px 10px;
+  font-family: DroidKufi-Regular;
+}
+/*------------------------------------------------------------------
+[ Button ]*/
+.container-login100-form-btn {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.login100-form-btn {
+  font-family: DroidKufi-Regular;
+  font-size: 18px;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  min-width: 160px;
+  height: 42px;
+  border-radius: 0px;
+
+  background: #438EB9;
+  /* background: -webkit-linear-gradient(left, #a445b2, #438EB9, #fa4299);
+  background: -o-linear-gradient(left, #a445b2, #438EB9, #fa4299);
+  background: -moz-linear-gradient(left, #a445b2, #438EB9, #fa4299);
+  background: linear-gradient(left, #a445b2, #438EB9, #fa4299); */
+  position: relative;
+  z-index: 1;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.login100-form-btn::before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  border-radius: 0px;
+  background-color: #555555;
+  top: 0;
+  left: 0;
+  opacity: 0;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+.login100-form-btn:disabled {
+    background-color: rgba(67, 142, 185. 0.85);
+    cursor: not-allowed;
+}
+.login100-form-btn:disabled:hover:before {
+  opacity: 0.25;
+}
+.login100-form-btn:not(:disabled):hover {
+  background-color: transparent;
+}
+
+.login100-form-btn:not(:disabled):hover:before {
+  opacity: 1;
+}
+
+
+
+/*------------------------------------------------------------------
+[ Alert validate ]*/
+
+.validate-input {
+  position: relative;
+}
+
+
+
+/*[ PADDING ]
+///////////////////////////////////////////////////////////
+*/
+.p-t-30 {padding-top: 30px;}
+.p-t-33 {padding-top: 33px;}
+.p-b-33 {padding-bottom: 33px;}
+.p-b-41 {padding-bottom: 41px;}
+.p-b-50 {padding-bottom: 50px;}
+
+
+.login-user-name {
+margin-bottom: 0px;
+color: #555555;
+line-height: 1.2;
+font-size: 20px;
+text-align: center;
+font-family: DroidKufi-Regular;
+min-height: 24px;
+}
+input.hide-spinners[type=number]::-webkit-inner-spin-button, 
+input.hide-spinners[type=number]::-webkit-outer-spin-button { 
+-webkit-appearance: none; 
+margin: 0; 
+}
+.modal-title {
+font-family: DroidKufi-Regular;
+color: #555555;
+}
+.create-new-account-link {
+font-family: DroidKufi-Regular;
+font-size: 14px;
+color: #555555!important;
+opacity: 0.92;
+cursor: pointer;
+}
+.create-new-account-link:hover {
+text-decoration: underline!important;
+}
+.form-control {
+font-family: DroidKufi-Regular;
+}

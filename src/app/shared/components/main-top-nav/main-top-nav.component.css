@@ -1,0 +1,155 @@
+.opacity-90 {
+    opacity: 0.9;
+}
+.nav.nav-list {
+    padding-right: 35px !important;
+    padding-left: 35px !important;
+}
+
+.sidebar.h-sidebar .nav-list>li>a>i.menu-icon {
+    font-size: 22x;
+}
+.sidebar.h-sidebar .nav-list>li>a>span.menu-text {
+    font-size: 14px;
+    font-family: DroidKufi-Bold;
+}
+
+.dropdown-toggle.noDropDown::after {
+    display: none!important;
+}
+
+.menu-toggle-btn {
+    background: #067594;
+    color: white;
+    border: none;
+    outline: none!important;
+    cursor: pointer;
+    padding: 5px 10px;
+    text-align: center;
+}
+.menu-toggle-btn.collapsed {
+    background: transparent;
+    color: #067594;
+    /* animation: toggle-btn-expand 200ms reverse; */
+}
+.menu-toggle-btn.collapsed:hover {
+    background: rgba(11, 95, 121, 0.1);
+}
+.menu-toggle-btn:not(.collapsed) {
+    width: 320px;
+    animation: toggle-btn-expand 200ms linear;
+}
+@keyframes toggle-btn-expand {
+    from { 
+        width: 44px;
+        background: transparent;
+    }
+    to { 
+        width: 320px; 
+        background: #067594;
+    }
+}
+.menu-toggle-btn.collapsed i.fa {
+    display: none;
+}
+.menu-toggle-btn.collapsed i.display-collapsed {
+    display: inline-block;
+}
+.menu-toggle-btn:not(.collapsed) i.display-collapsed {
+    display: none;
+}
+.menu-toggle-btn:not(.collapsed) i.display-opened {
+    display: none;
+}
+.menu-toggle-btn:not(.collapsed) i.display-opened {
+    display: inline-block;
+}
+#nav-list-collapse {
+    background: #067594;
+    background: linear-gradient(135deg, #0788ab 0%,#0788ab 15%,#0788ab 15%,#067594 100%);
+    color: white;
+    font-family: DroidKufi-Regular;
+    position: absolute;
+    z-index: 999;
+    padding: 15px 0;
+    min-width: 320px;
+    box-shadow: -2px 2px 10px 1px rgba(0, 0, 0, 0.4);
+    max-height: calc( 100% - 98px );
+    overflow: auto;
+}
+#nav-list-collapse .nav-collapse-title {
+    opacity: 0.85;
+    font-size: 15px;
+    padding: 5px 20px;
+    margin-top: 15px;
+    margin-bottom: 0px;
+    cursor: default;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.2);
+}
+#nav-list-collapse .nav-collapse-link {
+    font-size: 15px;
+    display: block;
+    padding: 7px 20px;
+    cursor: pointer;
+    margin: 3px 0px;
+    color: white;
+    text-decoration: none!important;
+}
+#nav-list-collapse .nav-collapse-link:hover {
+    background: rgba(11, 95, 121, 0.5);
+}
+
+@media only screen and (min-width: 992px) {
+    .rtl .sidebar.h-sidebar .nav-list>li {
+        margin-left: 0px !important;
+    }
+    .sidebar-relative {
+        position: relative;
+        width: 100%;
+    }
+}
+.hideOnsmallScreen {
+    display: block;
+}
+.showOnsmallScreen {
+    display: none;
+}
+@media only screen and (max-width: 992px) {
+    .hideOnsmallScreen {
+        display: none;
+    }
+    .showOnsmallScreen {
+        display: block;
+    }
+}
+@media only screen and (max-width: 425px) {
+    #nav-list-collapse {
+        min-width:100%;
+    }
+    .menu-toggle-btn:not(.collapsed) {
+        width: 100%;
+        animation: toggle-btn-expand 200ms linear;
+    }
+    @keyframes toggle-btn-expand {
+        from { 
+            width: 44px;
+            background: transparent;
+        }
+        to { 
+            width: 100%; 
+            background: #067594;
+        }
+    }
+}
+.baladyaName:before {
+    content: none;
+}
+.baladyaName p {
+    font-family: DroidKufi-Bold;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}

@@ -1,0 +1,36 @@
+<div class="app-page padding-tb-20">
+    <div class="page-width page-container">
+
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+            <app-page-title super="الأدوات" title="تغيير سنة الأصناف"></app-page-title>
+          </div>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-12">
+          <form name="form" #form="ngForm" class="master-form">
+              <hr>
+              <div class="form-row">
+                <div class="col-md-3 col-sm-12 form-group">
+                    <label>السنة</label>
+                </div>
+                <div class="col-md-3 col-sm-12 form-group">
+                  <select class="form-control" name="itemsYear" [(ngModel)]="itemsYear">
+                    <option *ngFor="let year of yearsList" [value]="year">{{year}} هـ</option>
+                  </select>
+                </div>
+                <div class="col-md-3 col-sm-12 form-group">
+                    <button class="btn btn-alt-theme margin-right-10 border-radius-0" (click)="save()">تغيير</button>
+                    <button class="btn btn-theme margin-right-10 border-radius-0" (click)="reset()">إفتراضى</button>
+                </div>
+              </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>

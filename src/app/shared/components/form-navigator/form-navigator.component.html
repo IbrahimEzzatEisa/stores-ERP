@@ -1,0 +1,29 @@
+<div class="master-form-nav">
+  <button  title=" جديد" (click)="reset()" class="success" *ngIf="permission.insert">
+    <i class="fa fa-plus"></i>
+  </button>
+
+  <button title="الأول" (click)="getFirst()" class="right" [disabled]="_rank==1" *ngIf="permission.read">
+    <i class="fa fa-angle-double-right"></i>
+  </button>
+
+  <button title="السابق" (click)="getPrevious()" class="right" [disabled]="!_isActive || _rank==1" *ngIf="permission.read">
+    <i class="fa fa-angle-right"></i>
+  </button>
+
+  <span *ngIf="_rank && _totalCount && permission.read" class="master-form-ranking">
+    <span class="rank">{{_rank}}</span> - {{_totalCount}}
+  </span>
+
+  <button title="التالي" (click)="getNext()" class="left" [disabled]="!_isActive || _rank==_totalCount" *ngIf="permission.read">
+    <i class="fa fa-angle-left"></i>
+  </button>
+
+  <button title="الأخير" (click)="getLast()" class="left" [disabled]="_rank && _rank==_totalCount" *ngIf="permission.read">
+    <i class="fa fa fa-angle-double-left"></i>
+  </button>
+
+  <button  title="حذف " (click)="delete()" class="danger" [disabled]="!_isActive" *ngIf="permission.delete">
+    <i class="fa fa-trash"></i>
+  </button>
+</div>

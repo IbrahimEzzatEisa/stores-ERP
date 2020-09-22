@@ -1,0 +1,224 @@
+<!-- <paint (onSave)="getSavedImage($event)" [width]='width' [height]='height' style="width:1500px;"></paint> -->
+<!-- <canvas #canvas id="canvas" width="800" height="10" style="display: none;"></canvas> -->
+
+<div class="app-page padding-tb-20">
+    <div class="page-width page-container">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                  <app-page-title super="الأصناف" title="بيانات الأصناف"></app-page-title>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 col-sm-12 margin-bottom-5 order-2 padding-right-left-21">
+                    <app-form-navigator
+                        [rank]="rank" [totalCount]="totalCount"
+                        [isActive]="isEdit" (onReset)="reset()" (onDelete)="delete()"
+                        (onFirst)="getFirst()" (onLast)="getLast()"
+                        (onPrevious)="getPrevious()" (onNext)="getNext()"
+                        [permission]="permission">
+                    </app-form-navigator>
+                </div>
+                <div class="col-md-6 col-sm-12 text-left margin-bottom-5 order-1 padding-right-left-21" *ngIf="permission.read">
+                    <button *ngIf="permission.print" class="btn-table-action" 
+                    [ngClass]="{'user-loading': busyPrinting}" [disabled]="busyPrinting || !isEdit"
+                    [title]="busyPrinting ? 'برجاء الانتظار' : 'طباعة'" (click)="print()">
+                        طباعة
+                        <i class="fa fa-print"></i>
+                      </button>
+                    <button title="قائمة بيانات الأصاف" class="master-form-button" routerLink="/pages/items-info/items/list">
+                        <span class="hideTitleOSS"> قائمة بيانات الأصناف </span>  
+                        <i class="fa fa-list margin-right-10 adjustMarginOSS"></i>
+                    </button>
+                </div>
+            </div> 
+            
+            <div class="row form-group">
+                <div class="col-12">
+                    <form name="form" #form="ngForm" class="master-form">
+                        <hr>
+                        <div class="form-row">
+                            <div class="form-group col-lg-4 col-md-6 col-sm-12">  
+                                <label>المجموعة<sup>*</sup></label>
+                                <app-dropdown-list #itemGroupDropdown
+                                    [selectedItemId]="item.itemGroupId" [list]="itemGroups" 
+                                    palceholder="اختر المجموعة" [busyLoading]="dropdownsLoading"
+                                    idField="itemGroupId" textField="itemGroupName" 
+                                    pageSize="7" [isRequired]="true" 
+                                    [isDisabled]="isEdit"
+                                    [isReadonly]="isEdit && !permission.update"
+                                    (onSelect)="selectItemGroup($event)"> 
+                                </app-dropdown-list>
+                                <!-- <select class="form-control"
+                                    #itemGroupId="ngModel" name="itemGroupId"
+                                    [(ngModel)]="item.itemGroupId" (change)="calcItemGroupId()" 
+                                    [ngClass]="{
+                                        'is-invalid': itemGroupId.invalid && (itemGroupId.dirty || itemGroupId.touched),
+                                        'readonly': isEdit && !permission.update
+                                    }"
+                                    [disabled]="isEdit && !permission.update" required>
+                                    <option *ngIf="!dropdownsLoading" [value]="undefined" disabled>اختر كود المجموعة</option>
+                                    <option *ngIf="dropdownsLoading" [value]="undefined">جارى التحميل...</option>
+                                    <option *ngFor="let itemg of itemGroups" value="{{itemg.itemGroupId}}">{{itemg.itemGroupName}} </option>
+                                </select>  -->
+                            </div>
+                            <div class="form-group col-lg-4 col-md-6 col-sm-12">  
+                                <label>كود الصنف<sup>*</sup></label>
+                                <input class="form-control" type="text" placeholder="كود الصنف"
+                                    name="itemId" #itemId="ngModel"
+                                    [(ngModel)]="item.itemId" (ngModelChange)="calcItemGroupId()" 
+                                    [ngClass]="{'is-invalid': itemId.invalid && (itemId.dirty || itemId.touched)}"
+                                    [readonly]="isEdit && !permission.update" required autocomplete="off"
+                                    disabled>
+                            </div>
+                            <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                                <label>الكود الفرعي</label>
+                                <input autocomplete="off" class="form-control" type="text" 
+                                    name="itemGroupIdItemId" [value]="item.itemFullCode" readonly required>  
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-4 col-md-6 col-sm-12">  
+                                <label>اسم الصنف<sup>*</sup></label>
+                                <input class="form-control" type="text" placeholder="اسم الصنف"
+                                    name="itemName" #itemName="ngModel"
+                                    [(ngModel)]="item.itemName" 
+                                    [ngClass]="{'is-invalid': itemName.invalid && (itemName.dirty || itemName.touched)}"
+                                    [readonly]="isEdit && !permission.update" required autocomplete="off" maxlength="100">
+                            </div>
+                            <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                                <label>نوع الصنف<sup>*</sup></label>
+                                <app-dropdown-list #itemTypeDropdown
+                                    [selectedItemId]="item.itemTypeId" [list]="itemTypes" 
+                                    palceholder="اختر نوع الصنف" [busyLoading]="dropdownsLoading"
+                                    idField="itemTypeId" textField="itemTypeName" 
+                                    pageSize="7" [isRequired]="true" [isReadonly]="isEdit && !permission.update"
+                                    (onSelect)="selectItemType($event)"> 
+                                </app-dropdown-list>
+                                <!-- <select class="form-control"
+                                    name="itemTypeId" #itemTypeId="ngModel"
+                                    [(ngModel)]="item.itemTypeId" 
+                                    [ngClass]="{
+                                        'is-invalid': itemTypeId.invalid && (itemTypeId.dirty || itemTypeId.touched),
+                                        'readonly': isEdit && !permission.update
+                                    }"
+                                    [disabled]="isEdit && !permission.update" required>
+                                    <option *ngIf="!dropdownsLoading" [value]="undefined" disabled disabled>اختر نوع الصنف</option>
+                                    <option *ngIf="dropdownsLoading" [value]="undefined">جارى التحميل...</option>
+                                    <option *ngFor="let itemt of itemTypes" value="{{itemt.itemTypeId}}">{{itemt.itemTypeName}} </option>
+                                </select> -->
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-lg-4 col-md-6 col-sm-12">  
+                                <label>الحد الأعلى للمخزون<sup>*</sup></label>
+                                <input class="form-control" type="number" placeholder="الحد الأعلى للمخزون"
+                                    name="maxStoreLevel" #maxStoreLevel="ngModel"
+                                    [(ngModel)]="item.maxStoreLevel" 
+                                    [ngClass]="{'is-invalid': maxStoreLevel.invalid && (maxStoreLevel.dirty || maxStoreLevel.touched)}"
+                                    autocomplete="off" [readonly]="isEdit && !permission.update" required>
+                            </div>
+                            <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                                <label>الحد الأدنى للمخزون<sup>*</sup></label>
+                                <input class="form-control" type="number" placeholder="الحد الأدنى للمخزون"
+                                    name="minStoreLevel" #minStoreLevel="ngModel" 
+                                    [(ngModel)]="item.minStoreLevel" 
+                                    [ngClass]="{'is-invalid': minStoreLevel.invalid && (minStoreLevel.dirty || minStoreLevel.touched)}"
+                                    autocomplete="off" [readonly]="isEdit && !permission.update" required>  
+                            </div>
+                            <div class="form-group col-lg-4 col-md-6 col-sm-12">  
+                                <label>حد الطلب للمخزون<sup>*</sup></label>
+                                <input class="form-control" type="number" placeholder="حد الطلب للمخزون"
+                                    name="reorderLevel" #reorderLevel="ngModel" 
+                                    [(ngModel)]="item.reorderLevel" 
+                                    [ngClass]="{'is-invalid': reorderLevel.invalid && (reorderLevel.dirty || reorderLevel.touched)}"
+                                    autocomplete="off" [readonly]="isEdit && !permission.update" required>
+                            </div>
+                            <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                                <label>السعر</label>
+                                <input class="form-control" type="number" 
+                                    name="price" placeholder="السعر" 
+                                    [(ngModel)]="item.price"
+                                    autocomplete="off" [readonly]="isEdit && !permission.update">  
+                            </div>
+                            <div class="form-group col-lg-4 col-md-6 col-sm-12">  
+                                <label>المخزن الإفتراضي</label>
+                                <app-dropdown-list #storeDropdown
+                                    [selectedItemId]="item.storeId" [list]="stores" 
+                                    palceholder="اختر المخزن الإفتراضي" [busyLoading]="dropdownsLoading"
+                                    idField="storeId" textField="storeName" 
+                                    pageSize="7" [isRequired]="false" [isReadonly]="isEdit && !permission.update"
+                                    (onSelect)="selectStore($event)"> 
+                                </app-dropdown-list>
+                                <!-- <select [(ngModel)]="item.storeId" class="form-control" name="storeId" aria-placeholder="اختر"
+                                    [ngClass]="{'readonly': isEdit && !permission.update}"
+                                    [disabled]="isEdit && !permission.update">
+                                    <option *ngIf="!dropdownsLoading" [value]="undefined" disabled>اختر المخزن الإفتراضي</option>
+                                    <option *ngIf="dropdownsLoading" [value]="undefined">جارى التحميل...</option>
+                                    <option *ngFor="let itemS of stores" value="{{itemS.storeId}}">{{itemS.storeName}} </option>
+                                </select> -->
+                            </div>
+                            <div class="form-group col-lg-4 col-md-6 col-sm-12">
+                                <label>مكان التخزين الإفتراضي</label>
+                                <app-dropdown-list #storeSectionDropdown
+                                    [selectedItemId]="item.storeSectionId" [list]="storeSections" 
+                                    palceholder="اختر مكان التخزين الإفتراضي" [busyLoading]="dropdownsLoading"
+                                    idField="storeSectionId" textField="storeSectionName" 
+                                    pageSize="7" [isRequired]="false" [isReadonly]="isEdit && !permission.update"
+                                    (onSelect)="selectStoreSection($event)"> 
+                                </app-dropdown-list>
+                                <!-- <select [(ngModel)]="item.storeSectionId" class="form-control" name="storeSectionId"
+                                    [ngClass]="{'readonly': isEdit && !permission.update}"
+                                    [disabled]="isEdit && !permission.update">
+                                    <option *ngIf="!dropdownsLoading" [value]="undefined" disabled>اختر مكان التخزين الإفتراضي</option>
+                                    <option *ngIf="dropdownsLoading" [value]="undefined">جارى التحميل...</option>
+                                    <option *ngFor="let itemSS of storeSections" value="{{itemSS.storeSectionId}}">{{itemSS.storeSectionName}} </option>
+                                </select> -->
+                            </div>
+                        </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">  
+                            <label>الوحدات</label>
+                            <app-crud-table [config]='itemGroupsTableConfig' [listItems]='item.itemUnits'
+                                [disableEdit]="!permission.update && isEdit">  
+                            </app-crud-table>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>الباركود</label>
+                            <div #barcodeParent *ngIf="item?.itemFullCode">
+                                <ngx-barcode *ngFor="let bcValue of item.itemFullCode.split('\n')" 
+                                    [bc-value]="bcValue" 
+                                    bc-element-type="img" 
+                                    bc-format="CODE128" 
+                                    bc-line-color="black"
+                                    bc-width="3" 
+                                    bc-height="60">
+                                </ngx-barcode>
+                            </div>
+                        </div>
+                    </div>
+                        <hr>
+                        <div *ngIf="!isEdit || (isEdit && permission.update)" class="row">
+                            <div class="form-group col-md-12 text-center">
+                              <button class="master-form-submit-button" 
+                              [disabled]="form.invalid || isDropdownsInvalid || busySaving" (click)="save()">
+                                حفظ <i *ngIf="busySaving" class="fa fa-spinner spinner-spin"></i>
+                              </button>
+                              <button class="master-form-cancel-button margin-right-10" (click)="cancel()">إلغاء
+                              </button>
+                            </div>
+                          </div>
+                        <div class="row">
+                            <div class="col-12 text-left">
+                                <app-permissions-string [permission]="permission"></app-permissions-string>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+ 
+        </div>
+    </div>
+</div>

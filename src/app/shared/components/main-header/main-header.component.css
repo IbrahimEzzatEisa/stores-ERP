@@ -1,0 +1,57 @@
+.header {
+    height: 45px;
+    background: #438EB9;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);
+    margin: 0px;
+    padding: 0px 35px;
+}
+.header .application-title .application-icon {
+    margin-left: 10px;
+}
+.header .application-title {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 45px;
+    margin: 0px;
+    font-family: DroidKufi-Bold;
+}
+.header .user-account-wrapper {
+    float: left;
+}
+.header .user-account-wrapper .user-account .user-name {
+    display: block;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0px;
+    font-family: DroidKufi-Bold;
+    padding: 12px;
+    background: rgba(255, 255, 225, 0)
+}
+.header .user-account-wrapper .user-account .user-name:hover {
+    background: rgba(255, 255, 225, 0.1)
+}
+.header .user-account-wrapper .user-account .user-name .fa {
+    font-weight: bold;
+    font-size: 18px;
+    transform: translateY(-2px);
+}
+.header .user-account-wrapper .user-account .dropdown-menu .dropdown-item {
+    font-size: 14px;
+    color: #585858;
+    margin: 0px;
+    font-family: DroidKufi-Regular;
+}
+@media (max-width: 768px) {
+    .header {
+        padding: 0;
+    }
+}
+@media (max-width: 500px) {
+    .header .application-title {
+        font-size: 14px;
+    }
+    .header .user-account-wrapper .user-account .user-name {
+        font-size: 10px;
+        padding: 12px 5px;
+    }
+}

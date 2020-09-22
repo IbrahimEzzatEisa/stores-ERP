@@ -1,0 +1,32 @@
+<div class="app-page padding-tb-20">
+  <div class="page-width page-container">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 col-sm-6 form-group"> 
+          <p class="page-title title-line-height-OSS">
+            <span class="title-parent">الأكواد الرئيسية</span>
+            <span class="title-arrow"><i class="fa fa-chevron-left"></i></span>
+            <span class="title-current-page"> تصنيف المستودعات</span>
+          </p>
+        </div>
+      </div>
+          <app-code-name-table #table
+          codeLabel='الكود'
+          codeKey= 'storeTypeId'
+          nameLabel= ' بيان التصنيف'
+          nameKey= 'storeTypeName'
+          [permissionId]="permissionId"
+          [itemsList]='itemsTypes'
+          [busyCreating]='busyCreating'
+          [busyPrinting]='busyPrinting'
+          (getAllFun)='getAll()'
+          (createFun)='create($event)'
+          (updateFun)='update($event)'
+          (deleteFun)='delete($event)'
+          (printFun)='print()'
+
+          ></app-code-name-table>
+    </div>
+  </div>
+</div>
+

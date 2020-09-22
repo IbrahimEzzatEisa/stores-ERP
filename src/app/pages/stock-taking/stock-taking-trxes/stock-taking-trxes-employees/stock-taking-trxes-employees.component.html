@@ -1,0 +1,40 @@
+
+            <table class="crud-table crud">
+                <tbody>
+                  <tr *ngIf="_employees.length==0">
+                    <td colspan="2" class="text-center">لا يوجد موظفين</td>
+                  </tr>
+                    <tr [hidden]="employee['status']==isDeletedStatus" *ngFor="let employee of _employees; let i=index">
+                        <td>
+                          <span>{{employee.empId | select:'empId':'empName':employeesList}}</span>
+                        </td>
+                        <td class="actions" *ngIf="!disableEdit">
+                          <button title="حذف" (click)="delete(i, employee)">
+                              <i class="fas fa-trash text-danger"></i>
+                          </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="disableEdit" hidden></tr>
+                    <tr *ngIf="!disableEdit">
+                        <td>
+                          <app-dropdown-list #newEmployeeDropdown
+                              [selectedItemId]="newEmployee.empId" [list]="employeesList" 
+                              palceholder="اختر موظف" [busyLoading]="dropdownsLoading"
+                              idField="empId" textField="empName" 
+                              pageSize="7" [isRequired]="false" [isReadonly]="false"
+                              (onSelect)="selectNewEmployee($event)"> 
+                          </app-dropdown-list>
+                          <!-- <select class="form-control" name="newEmployee" [(ngModel)]="newEmployee" required>
+                              <option *ngIf="!dropdownLoading" [value]="undefined" disabled>اختر موظف</option>
+                              <option *ngIf="dropdownLoading" [value]="undefined" disabled>جارى التحميل ...</option>
+                              <option *ngFor="let emp of employeesList" [ngValue]="emp">{{emp.empName}}</option>
+                          </select> -->
+                        </td>
+                        <td class="actions">
+                          <button title="إضافة" (click)="addNewEmployeeToList()" [disabled]="!newEmployee.empId">
+                              <i class="fa fa-plus text-success"></i>
+                          </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>

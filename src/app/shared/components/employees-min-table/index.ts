@@ -1,0 +1,1 @@
+export * from './employees-min-table.component'

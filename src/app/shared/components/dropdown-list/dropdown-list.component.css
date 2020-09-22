@@ -1,0 +1,99 @@
+.app-dropdown-list {
+    position: relative;
+    font-family: DroidKufi-Regular;
+}
+.app-dropdown-list .form-control {
+    background: white;
+    padding-left: 50px;
+}
+.app-dropdown-list .form-control.is-invalid {
+    padding-right: 2.25rem;
+    background-repeat: no-repeat;
+    background-position: center right calc(2.25rem / 4);
+    background-size: calc(2.25rem / 2) calc(2.25rem / 2);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23dc3545' viewBox='-2 -2 7 7'%3e%3cpath stroke='%23d9534f' d='M0 0l3 3m0-3L0 3'/%3e%3ccircle r='.5'/%3e%3ccircle cx='3' r='.5'/%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E");
+}
+.app-dropdown-list .dropdown-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 7px 8px;
+    font-size: 15px;
+}
+.app-dropdown-list .delete-icon {
+    position: absolute;
+    top: 0;
+    left: 21px;
+    padding: 7px 10px;
+    font-size: 15px;
+}
+.app-dropdown-list .dropdown-list {
+    position: absolute;
+    top: 100%;
+    margin-top: 3px;
+    direction: rtl;
+    text-align: right;
+    width: 100%;
+    padding: 15px;
+    color: #393939;
+    background: white;
+    box-shadow: 0 3px 8px 0 rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.08);
+    z-index: 999;
+    /* --font-family-sans-serif: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    --font-family-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; */
+}
+.app-dropdown-list .dropdown-list .list-search input {
+    width: 100%;
+    padding: 5px 7px;
+    color: #393939;
+}
+.app-dropdown-list .dropdown-list .search-results {
+    padding: 0;
+    list-style-type: none;
+    margin: 10px -15px 0 -15px;
+}
+.app-dropdown-list .dropdown-list .search-results li {
+    padding: 4px 8px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.app-dropdown-list .dropdown-list .search-results p {
+    padding: 5px 15px;
+    font-size: 16px;
+}
+.app-dropdown-list .dropdown-list .search-results li:hover {
+    background: rgba(51, 51, 51, 0.1);
+}
+.form-control.is-invalid ~ .dropdown-icon:hover,
+.form-control.is-invalid:hover ~ .dropdown-icon {
+    color: #dc3545;
+}
+.form-control ~ .dropdown-icon.isOpen {
+    color: #067594;
+}
+.form-control.is-invalid ~ .dropdown-icon.isOpen {
+    color: #dc3545;
+}
+.form-control ~ .dropdown-icon:hover,
+.form-control:hover ~ .dropdown-icon {
+    color: #067594;
+}
+.form-control ~ .delete-icon:hover,
+.form-control:hover ~ .delete-icon {
+    color: #dc3545;
+}
+.app-dropdown-list .master-form-nav button {
+    width: 30px;
+    font-size: 22px;
+}
+.app-dropdown-list .master-form-nav .master-form-ranking {
+    padding: 0px 5px;
+    font-size: 14px;
+}
+.app-dropdown-list .master-form-nav .master-form-ranking .rank {
+    font-size: 15px;
+}
+.disabled {
+    background: #e9ecef!important;
+    border: 1px solid #ced4da!important;
+}

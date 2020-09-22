@@ -1,0 +1,73 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title darker-theme-color">{{isEdit? 'تعديل': 'إضافة'}} صنف</h4>
+    <button type="button" class="close" data-dismiss="modal" (click)="close()">&times;</button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid">
+      <form #userForm="ngForm" #form="ngForm" class="master-form">
+        <div class="row">
+          <div class="col-4 form-group">
+            <label>الرقم <sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <input type="number" class="form-control" name="lineNo" #lineNo="ngModel" [(ngModel)]="mngrOrdersItem.lineNo" disabled required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4 form-group">
+            <label>المجموعة <sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <app-dropdown-list #itemGroupDropdown
+              [selectedItemId]="mngrOrdersItem.itemGroupId" [list]="itemGroups" 
+              palceholder="اختر المجموعة" [busyLoading]="busyLoadingItemGroups"
+              idField="itemGroupId" textField="itemGroupName" 
+              pageSize="7" [isRequired]="true" 
+              (onSelect)="onSelectedItemGroupChange($event)"> 
+            </app-dropdown-list>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4 form-group">
+            <label>الصنف <sup>*</sup></label>
+          </div>
+          <div class="col-3 form-group">
+            <input class="form-control" name="itemId" 
+            [(ngModel)]="mngrOrdersItem.itemId" 
+            [disabled]="!items || items.length==0" autocomplete="off" 
+            required maxlength="20">
+          </div>
+          <div class="col-5 form-group">
+            <app-dropdown-list #itemDropdown
+              [selectedItemId]="mngrOrdersItem.itemId" [list]="items" 
+              palceholder="اختر الصنف" [busyLoading]="busyLoadingItems"
+              idField="itemId" textField="itemName" 
+              pageSize="7" [isRequired]="true"
+              (onSelect)="onSelectedItemChange($event)"> 
+            </app-dropdown-list>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-4 form-group">
+            <label>الكمية<sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <input type="number" class="form-control" name="quantity" #demandQuantity="ngModel"
+             [(ngModel)]="mngrOrdersItem.quantity" autocomplete="off" required>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button title="حفظ" class="master-form-submit-button" type="submit" 
+      (click)="save()" [disabled]="busySaving || form.invalid || itemGroupDropdown.invalid || itemDropdown.invalid">
+      حفظ 
+      <i [hidden]="!busySaving" class="fa fa-spinner spinner-spin"></i>
+    </button>
+    <button title="إغلاق" class="master-form-cancel-button margin-right-10" type="button" (click)="close()">إغلاق</button>
+  </div>
+</div>

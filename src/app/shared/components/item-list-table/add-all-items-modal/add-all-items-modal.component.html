@@ -1,0 +1,41 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title darker-theme-color">إضافة <span *ngIf="oneGroupChecked">الأصناف</span><span *ngIf="!oneGroupChecked">جميع الأصناف</span></h4>
+    <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group"></div>
+      <div class="row form-group">
+        <div class="col-2">
+            <label class="checkbox-container margin-top-5">
+                <input type="checkbox" name="oneGroup" [(ngModel)]="oneGroupChecked">
+                <span class="checkmark"></span>
+            </label>
+        </div>
+        <div class="col-9">
+          <label for="oneGroup">إضافة الأصناف لمجموعة واحده فقط</label>
+        </div>
+      </div>
+      <div [hidden]="!oneGroupChecked" class="row form-group">
+        <div class="col-12">
+          <label>اختر المجموعة</label>
+          <app-dropdown-list #itemGroupDropdown
+              [selectedItemId]="selectedItemGroup.itemGroupId"
+              [list]="itemGroups" 
+              palceholder="اختر المجموعة" [busyLoading]="busyLoadingDropdown"
+              idField="itemGroupId" textField="itemGroupName" 
+              pageSize="10" [isRequired]="true"
+              (onSelect)="selectItemGroup($event)"> 
+          </app-dropdown-list>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="master-form-submit-button" (click)="close()" [disabled]="oneGroupChecked && itemGroupDropdown.invalid">إضافة <span *ngIf="!oneGroupChecked">جميع الأصناف</span></button>
+      <button type="button" class="master-form-cancel-button margin-right-10" (click)="dismiss()">إغلاق</button>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+.not-fount-content {
+    text-align: center;
+    font-family: DroidKufi-Regular;
+    margin-top: 2rem;
+    padding: 2rem 1rem 1rem 1rem;
+    max-width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+    background: #438EB9;
+    border-radius: 10px;
+}
+.not-fount-content .not-found-icon {
+    font-size: 80px;
+    margin-bottom: 1rem;
+    color: white;
+}
+.not-fount-content .not-found-text {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 1rem;
+    display: inline-block;
+    color: white;
+}

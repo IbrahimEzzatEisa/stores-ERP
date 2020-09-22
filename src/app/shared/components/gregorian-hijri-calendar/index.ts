@@ -1,0 +1,1 @@
+export { GregorianHijriCalendarComponent } from './gregorian-hijri-calendar.component';

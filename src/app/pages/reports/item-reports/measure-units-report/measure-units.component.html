@@ -1,0 +1,47 @@
+<div class="app-page padding-tb-20">
+    <div class="page-width page-container">
+        <form class="container-fluid master-form" name="form" #form="ngForm">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <app-page-title super="تقارير الأصناف" title="وحدات القياس"></app-page-title>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 text-left form-group">
+                    <button class="btn-theme btn-theme-OSS btn-alt-theme margin-right-4-OSS margin-right-5" title="طباعة" 
+                        (click)="printReport()" [disabled]="busyPrinting">
+                        <i class="action-icon fa fa-print fa-action-md"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2  form-group">
+                    <label class="col-form-label"><b> من وحدة </b></label>
+                </div>
+                <div class="form-group col-md-4">
+                    <app-dropdown-list
+                        [selectedItemId]="fromUnit" [list]="units" 
+                        palceholder="إختر الوحدة" [busyLoading]="dropdownsLoading"
+                        idField="unitId" textField="unitName" 
+                        pageSize="5" [isRequired]="true"
+                        (onSelect)="selectFromUnitId($event)"> 
+                    </app-dropdown-list>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2  form-group">
+                    <label class="col-form-label"><b> إلى وحدة </b></label>
+                </div>
+                <div class="form-group col-md-4">
+                    <app-dropdown-list
+                        [selectedItemId]="toUnit" [list]="units" 
+                        palceholder="إختر الوحدة" [busyLoading]="dropdownsLoading"
+                        idField="unitId" textField="unitName" 
+                        pageSize="5" [isRequired]="true"
+                        (onSelect)="selectToUnitId($event)"> 
+                    </app-dropdown-list>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

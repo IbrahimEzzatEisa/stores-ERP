@@ -1,0 +1,12 @@
+<li *ngIf="getPermission(menuItem.data.permissionName) || haveChildren(menuItem)" class="hover" [ngClass]="{'hover': menuItem.data.children}"> <!-- class: active -->
+    <a [routerLink]="menuItem.path" (click)="hideNavMenus()">
+        <i class="menu-icon fas fa-caret-left"></i>
+        <i class="sub-menu-icon {{menuItem.data.icon}}"></i>
+        <span class="sub-menu-text">{{menuItem.data.title}}</span>
+        <b *ngIf="menuItem.data.children" class="arrow fa fa-angle-down"></b>
+    </a>
+    <b *ngIf="menuItem.data.children" class="arrow"></b>
+    <ul *ngIf="menuItem.data.children" class="submenu">
+        <app-menu-list-item class="menuItemComponent" *ngFor="let subItem of menuItem.data.children" [menuItem]="subItem"></app-menu-list-item>
+    </ul>
+</li>

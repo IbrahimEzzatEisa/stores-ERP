@@ -1,0 +1,123 @@
+<div class="modal-content"> 
+    <div class="modal-header">
+      <h4 class="modal-title darker-theme-color">{{isEdit? 'تعديل': 'إضافة'}} صنف</h4>
+      <button type="button" class="close" data-dismiss="modal" (click)="close()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="container-fluid">
+        <form #userForm="ngForm" #form="ngForm" class="master-form">
+          <div class="row">
+            <div class="col-4 form-group">
+              <label>الرقم <sup>*</sup></label>
+            </div>
+            <div class="col-8 form-group">
+              <input type="number" class="form-control" name="lineNo" 
+                #lineNo="ngModel" [(ngModel)]="stockTakingTrxItem.lineNo" disabled required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 form-group">
+              <label>المجموعة <sup>*</sup></label>
+            </div>
+            <div class="col-8 form-group">
+              <app-dropdown-list #itemGroupDropdown
+                [selectedItemId]="stockTakingTrxItem.itemGroupId" [list]="itemGroups" 
+                palceholder="اختر المجموعة" [busyLoading]="busyLoadingItemGroups" 
+                idField="itemGroupId" textField="itemGroupName" 
+                pageSize="7" [isRequired]="true"
+                (onSelect)="onSelectedItemGroupChange($event)"> 
+              </app-dropdown-list>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 form-group">
+              <label>الصنف <sup>*</sup></label>
+            </div>
+            <div class="col-3 form-group">
+              <input class="form-control" name="itemId" 
+                [(ngModel)]="stockTakingTrxItem.itemId" 
+                (ngModelChange)="onSelectedItemChange()" 
+                maxlength="20" required
+                [disabled]="!items || items.length==0" autocomplete="off">
+            </div>
+            <div class="col-5 form-group">
+              <app-dropdown-list #itemIdDropdown
+                [selectedItemId]="stockTakingTrxItem.itemId" [list]="items" 
+                palceholder="اختر الصنف" [busyLoading]="busyLoadingItems"
+                idField="itemId" textField="itemName" 
+                pageSize="7" [isRequired]="true"
+                (onSelect)="onSelectedItemChange($event)"> 
+              </app-dropdown-list>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 form-group">
+              <label>الوحدة <sup>*</sup></label>
+            </div>
+            <div class="col-8 form-group">
+              <app-dropdown-list #unitIdDropdown
+                [selectedItemId]="stockTakingTrxItem.unitId" [list]="units" 
+                palceholder="اختر الوحدة" [busyLoading]="busyLoadingUnits"
+                idField="unitId" textField="unitName" 
+                pageSize="7" [isRequired]="true"
+                (onSelect)="onSelectUnit($event)"> 
+              </app-dropdown-list>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 form-group">
+              <label>الكمية الدفترية<sup>*</sup></label>
+            </div>
+            <div class="col-8 form-group">
+              <input type="number" class="form-control" name="quantity" 
+                #quantity="ngModel"
+                [(ngModel)]="stockTakingTrxItem.quantity" 
+                (ngModelChange)="calcDeference()"
+                autocomplete="off" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 form-group">
+              <label>الكمية الفعلية<sup>*</sup></label>
+            </div>
+            <div class="col-8 form-group">
+              <input type="number" class="form-control" name="actualQuantity" 
+                #actualQuantity="ngModel"
+                [(ngModel)]="stockTakingTrxItem.actualQuantity" 
+                (ngModelChange)="calcDeference()"
+                autocomplete="off" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 form-group">
+              <label>الفرق<sup>*</sup></label>
+            </div>
+            <div class="col-8 form-group">
+              <input type="number" class="form-control" 
+                [value]="stockTakingTrxItem.difference" readonly>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 form-group">
+              <label>ملاحظات<sup>*</sup></label>
+            </div>
+            <div class="col-8 form-group">
+              <textarea class="form-control" name="notes" #notes="ngModel"
+                [(ngModel)]="stockTakingTrxItem.notes"
+                autocomplete="off" maxlength="100">
+              </textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button title="حفظ" class="master-form-submit-button" type="submit" 
+        (click)="save()" 
+        [disabled]="form.invalid || itemGroupDropdown.invalid || itemIdDropdown.invalid || unitIdDropdown.invalid || busySaving">
+        حفظ 
+        <i [hidden]="!busySaving" class="fa fa-spinner spinner-spin"></i>
+      </button>
+      <button title="إغلاق" class="master-form-cancel-button margin-right-10" type="button" (click)="close()">إغلاق</button>
+    </div>
+  </div>

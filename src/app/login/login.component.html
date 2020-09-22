@@ -1,0 +1,93 @@
+<div class="limiter">
+  <div class="container-login100" style="background-image: url('assets/imgs/store2.jpg');">
+    <div class="wrap-login100 p-t-30 p-b-50">
+      <span class="login100-form-title system-title">
+        <p class="text-center system-name"><i class="fa fa-laptop margin-left-10"></i>نظام المستودعات</p>
+        <span>تاج لتقنية المعلومات</span>
+      </span>
+      <span class="login100-form-title p-b-41">
+        تسجيل الدخول
+      </span>
+      <form #form="ngForm" class="login100-form validate-form p-b-33 p-t-33">
+        <p class="loginMessage text-center text-danger">{{redirectMessage}}</p>
+        <p class="login-user-name" [ngClass]="{'text-theme': valideUser, 'text-danger': !valideUser}">
+          <span *ngIf="userId && !busy">{{userName}}</span>
+        </p>
+        <div class="wrap-input100 validate-input">
+          <input class="input100 hide-spinners" type="text" #id="ngModel" name="username" 
+          [(ngModel)]="userId" placeholder="اسم المستخدم" (focusout)="getUserName()" required>
+          <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+          <div class="left-icon">
+            <i class="fa fa-user"
+            [ngClass]="{'user-loading': busy, 'text-theme': !id.invalid && valideUser && !busy, 'text-danger': (id.invalid || !valideUser) && !busy && firstRequestDone && (id.touched || id.dirty)}"></i>
+          </div>
+        </div> 
+
+        <div class="wrap-input100 validate-input">
+          <input id="passwordInput" class="input100" type="password"  #password="ngModel" name="password" 
+          [(ngModel)]="userPassword" placeholder="كلمة المرور" min-length="50" required>
+          <span class="focus-input100" data-placeholder="&#xe80f;"></span>
+          <div class="left-icon">
+            <i class="fa fa-lock" 
+            [ngClass]="{'text-theme': !password.invalid, 'text-danger': password.invalid && (password.touched || password.dirty)}"></i>
+          </div>
+        </div>
+
+        <!-- <div class="col-12 form-group text-left">
+          <a (click)="openCreateNewUser()" class="create-new-account-link">تسجيل مستخدم جديد</a>
+        </div> -->
+
+        <div class="container-login100-form-btn m-t-32 form-group">
+          <button class="login100-form-btn" (click)="login()" [disabled]="form.invalid || busyLoggingIn || !valideUser">
+            <span *ngIf="!busyLoggingIn">تسجيل الدخول</span>
+            <span *ngIf="busyLoggingIn">جارى تسجيل الدخول</span>
+            <i [hidden]="!busyLoggingIn" class="fa fa-spinner spinner-spin margin-right-5"></i>
+          </button>
+        </div>
+
+        <div class="container-login100-form-btn m-t-32">
+          <label class="checkbox-container margin-top-5">
+              <input name="rememberMe" type="checkbox" [(ngModel)]="isRememberMeChecked">
+              <span class="checkmark"></span>
+          </label>
+          <div class="col-md-10 checkboxPadding">
+              <label>تذكر كلمة المرور</label>  
+          </div> 
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #updatePasswordModal let-modal>
+  <!-- <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div> -->
+  <div class="modal-body">
+    <div class="form-group">
+      <p class="login-user-name text-theme form-group">
+        <span>{{userName}}</span>
+      </p>
+    </div>
+    <form name="newPasswordForm" #newPasswordForm="ngForm">
+      <div class="form-group">
+        <label for="newPassword">ادخل كلمة مرور جديدة</label>
+          <input type="password" class="form-control input-border" name="newPassword" [(ngModel)]="newPasswordModel" #newPassword='ngModel' required
+          [ngClass]="{'is-valid': !newPassword.invalid, 'is-invalid': newPassword.invalid && (newPassword.touched || newPassword.dirty)}">
+      </div>
+      <div class="form-group">
+        <label for="newPasswordConfirmation">تأكيد كلمة المرور</label>
+          <input type="password" class="form-control input-border" name="newPasswordConfirmation" [(ngModel)]="newPasswordConfirmationModel" #newPasswordConfirmation='ngModel' required
+          [ngClass]="{'is-valid': !newPasswordConfirmation.invalid && newPasswordModel==newPasswordConfirmationModel, 'is-invalid': (newPasswordConfirmation.invalid || newPasswordModel!=newPasswordConfirmationModel) && (newPasswordConfirmation.touched || newPasswordConfirmation.dirty)}">
+      </div>
+      <div class="form-group text-center">
+          <button type="button" class="btn btn-outline-dark modal-btn" (click)="modal.close(newPassword.value)" [disabled]="newPasswordForm.invalid || newPasswordModel!=newPasswordConfirmationModel">حفظ</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+

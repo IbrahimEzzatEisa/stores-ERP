@@ -1,0 +1,82 @@
+<div class="row">
+
+  <div class="col-md-6 col-sm-12 form-group">
+    <div class="search-input-wrapper-theme">
+      <input type="text" placeholder="بحث..." [(ngModel)]="filterParams.searchValue" autocomplete="off" (ngModelChange)="onSeach()"> 
+      <i class="search-icon fa fa-search"></i>
+      <i *ngIf="filterParams.searchValue" (click)="removeSearch()" class="close-icon fa fa-times clickable"></i>
+    </div>
+  </div>  
+  <div class="col-md-6 col-sm-12 form-group text-left">
+ 
+  <div class="dropdown display-inline margin-right-5">
+    <button class="select-page-size padding-shrink-lr dropdown-toggle" 
+    type="button" id="dropdownMenuButton" data-toggle="dropdown" 
+    aria-haspopup="true" aria-expanded="false">
+      {{filterParams.pageSize}}
+    </button> 
+    <div class="dropdown-menu  theme-dropdown-menu min-width-40" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item theme-dropdown"(click)="setPageSize(10)" [ngClass]="{'selectedSize':filterParams.pageSize==10}">10</a>
+      <a class="dropdown-item theme-dropdown"(click)="setPageSize(20)" [ngClass]="{'selectedSize':filterParams.pageSize==20}">20</a>
+      <a class="dropdown-item theme-dropdown"(click)="setPageSize(30)" [ngClass]="{'selectedSize':filterParams.pageSize==30}">30</a>
+      <a class="dropdown-item theme-dropdown"(click)="setPageSize(40)" [ngClass]="{'selectedSize':filterParams.pageSize==40}">40</a>
+      <a class="dropdown-item theme-dropdown"(click)="setPageSize(50)" [ngClass]="{'selectedSize':filterParams.pageSize==50}">50</a>
+    </div>
+    </div>
+  </div>
+</div> 
+
+<div class="row form-group">
+  <div class="col-12">
+    <div class="scrol-horizontal">
+      <table class="crud-table crud" sortable-table (sorted)="sort($event)">
+        <thead>
+          <tr>
+            <th class="clickable" [sortable-column]="column.key" [hidden]="!column.visible" *ngFor="let column of tableColumns">{{column.label}}</th>
+            <th class="text-center" style="min-width: 100px;">
+              <button class="btn btn-crud" (click)="openAddModel()" *ngIf="!disableEdit">إضافة <i class="fas fa-plus"></i></button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="items.length==0&&!busyLoading">
+            <td [attr.colspan]="tableColumns.length+1" class="text-center text-theme">
+              لا يوجد أصناف 
+              <button class="btn btn-crud" (click)="openAddModel()" *ngIf="!disableEdit">إضافة <i class="fas fa-plus"></i></button>
+            </td>
+          </tr>
+          <tr *ngIf="items.length==0&&busyLoading">
+            <td [attr.colspan]="tableColumns.length+1" class="text-center text-theme">
+              <i class="fa fa-2x fa-spinner spinner-spin"></i>
+            </td>
+          </tr>
+          <tr *ngFor="let item of items">
+            <td [hidden]="!column.visible" *ngFor="let column of tableColumns">{{item[column.key]}}</td>
+            <td class="text-center crud-actions">
+              <button title="تعديل" (click)="openEditModel(item)" *ngIf="!disableEdit">
+                  <i class="fas fa-pen text-theme"></i>
+              </button>
+              <button title="حذف" class="margin-right-5" (click)="delete(item)" *ngIf="!disableEdit">
+                  <i class="fa fa-times text-danger"></i>
+              </button>
+            </td>
+          </tr>
+          <tr hidden></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="row text-center">
+  <div class="col-md-6 col-sm-12 form-group">
+    <app-pagination *ngIf="totalNumberOfPages && !(totalNumberOfPages==1)" 
+      [page]="filterParams.pageNumber" [size]="totalNumberOfPages" (onChange)="changePage($event)">
+    </app-pagination>
+  </div>
+   <div class="col-md-6 col-sm-12 form-group text-left">
+      <app-table-info *ngIf="items?.length>0 && !busyLoading"
+        [page]="filterParams.pageNumber" [pageSize]="filterParams.pageSize"
+        [length]="items.length" [total]="totalNumberOfItems"></app-table-info>
+  </div> 
+</div> 

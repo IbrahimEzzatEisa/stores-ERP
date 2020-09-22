@@ -1,0 +1,47 @@
+<div class="app-page padding-tb-20">
+  <div class="page-width page-container">
+    <form class="container-fluid master-form" name="form" #form="ngForm">
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <app-page-title super="تقارير الحركات" title="بيانات الموردين"></app-page-title>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 text-left form-group">
+          <button class="btn-theme btn-theme-OSS btn-alt-theme margin-right-4-OSS margin-right-5" title="طباعة" 
+              (click)="printReport()" [disabled]="busyPrinting">
+              <i class="action-icon fa fa-print fa-action-md"></i>
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3  form-group">
+          <label class="col-form-label"><b> من رمز مورد </b></label>
+        </div>
+        <div class="col-md-3 form-group">
+          <app-dropdown-list
+            [selectedItemId]="fromSupplierId" [list]="suppliers" 
+            palceholder="إختر الوحدة" [busyLoading]="dropdownsLoading"
+            idField="supplierId" textField="supplierName" 
+            pageSize="5" [isRequired]="true"
+            (onSelect)="selectFromSupplierId($event)"> 
+          </app-dropdown-list>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3  form-group">
+          <label class="col-form-label"><b> إلى رمز مورد </b></label>
+        </div>
+        <div class="col-md-3 form-group">
+          <app-dropdown-list
+            [selectedItemId]="toSupplierId" [list]="suppliers" 
+            palceholder="إختر الوحدة" [busyLoading]="dropdownsLoading"
+            idField="supplierId" textField="supplierName" 
+            pageSize="5" [isRequired]="true"
+            (onSelect)="selectToSupplierId($event)"> 
+          </app-dropdown-list>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

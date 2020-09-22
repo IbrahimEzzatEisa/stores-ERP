@@ -1,0 +1,15 @@
+.modal-title {
+    font-family: DroidKufi-Bold;
+    font-size: 16px;
+    padding: 4px 0px;
+}
+.modal-body {
+    font-family: DroidKufi-Regular;
+    font-size: 17px;
+}
+.modal-body>p {
+    margin: 1rem 0;
+}
+.modal-footer {
+    font-family: DroidKufi-Regular;
+}

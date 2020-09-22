@@ -1,0 +1,36 @@
+<div class="app-page padding-tb-20">
+  <div class="page-width page-container">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <app-page-title super="عهد الموظفيين" title="قائمة عهد الموظفيين"></app-page-title>
+        </div>
+      </div>  
+      <div class="row">
+        <div class="col-12">
+          <app-list-table 
+            [loading]="busyLoading"
+            [addButtonText]="addButtonText"
+            (onSearch)="search($event)"
+            (onSort)="sort($event)"
+            [pageSize]="filterParams.pageSize" (OnPageSizeChange)="changePageSize($event)"
+            [itemsList]="custodyTrxes" [configs]="configs">
+          </app-list-table>
+        </div>
+      </div>
+      <div class="row text-center">
+        <div class="col-md-9 col-sm-9 form-group">
+          <app-pagination *ngIf="totalNumberOfPages && !(totalNumberOfPages==1)" 
+            [page]="filterParams.pageNumber" [size]="totalNumberOfPages" (onChange)="changePage($event)">
+          </app-pagination>
+        </div>
+         <div class="col-md-3 col-sm-3 form-group text-left">
+            <app-table-info *ngIf="custodyTrxes?.length>0 && !busyLoading"
+              [page]="filterParams.pageNumber" [pageSize]="filterParams.pageSize"
+              [length]="custodyTrxes.length" [total]="totalNumberOfItems">
+            </app-table-info>
+        </div> 
+      </div> 
+    </div>
+  </div>
+</div>

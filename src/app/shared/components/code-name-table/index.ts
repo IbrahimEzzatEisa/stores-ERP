@@ -1,0 +1,1 @@
+export * from './code-name-table.component';

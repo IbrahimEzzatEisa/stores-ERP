@@ -1,0 +1,37 @@
+<div class="app-page padding-tb-20">
+  <div class="page-width page-container">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <app-page-title super="الحركات" title="قائمة  محاضر الاستلام"></app-page-title>
+        </div>
+      </div> 
+      <div class="row">
+        <div class="col-12"> 
+          <app-list-table 
+            [loading]="busyLoading"
+            addButtonText="إضافة محضر استلام"
+            addEditRoute="/pages/movements/receive-record"
+            (onSearch)="search($event)"
+            (onSort)="sort($event)"
+            [pageSize]="filterParams.pageSize" (OnPageSizeChange)="changePageSize($event)"
+            [itemsList]="orders" [configs]="configs">
+          </app-list-table>
+        </div>
+      </div>
+      <div class="row text-center">
+        <div class="col-md-6 col-sm-12 form-group">
+          <app-pagination *ngIf="totalNumberOfPages && !(totalNumberOfPages==1)" 
+            [page]="filterParams.pageNumber" [size]="totalNumberOfPages" (onChange)="changePage($event)">
+          </app-pagination>
+        </div>
+        <div class="col-md-6 col-sm-12 form-group text-left">
+          <app-table-info *ngIf="orders?.length>0 && !busyLoading"
+            [page]="filterParams.pageNumber" [pageSize]="filterParams.pageSize"
+            [length]="orders.length" [total]="totalNumberOfItems">
+          </app-table-info> 
+        </div> 
+      </div> 
+      </div>
+  </div>
+</div>

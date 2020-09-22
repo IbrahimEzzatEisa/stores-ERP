@@ -1,0 +1,47 @@
+<div class="app-page padding-tb-20">
+  <div class="page-width page-container">
+    <div class="container-fluid formStyle">
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <app-page-title super="تقارير المستودعات" title="أمناء المستودعات"></app-page-title>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 text-left form-group">
+          <button class="btn-theme btn-theme-OSS btn-alt-theme margin-right-4-OSS margin-right-5" title="طباعة" 
+              [disabled]="busyPrinting" (click)="printReport()">
+              <i class="action-icon fa fa-print fa-action-md"></i>
+          </button>
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3  form-group">
+          <label class="col-form-label"><b> من أمين المستودع </b></label>
+        </div>
+        <div class="col-md-3 form-group">
+          <app-dropdown-list
+          [selectedItemId]="fromStoreKeeperId" [list]="storeKeepers" 
+          palceholder="إختر أمين المستودع" [busyLoading]="busyLoadingStoreKeepers"
+          idField="storeKeeperId" textField="storeKeeperName" 
+          pageSize="7" [isRequired]="false"
+          (onSelect)="selectFromStoreKeeperId($event)"> 
+      </app-dropdown-list>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3  form-group">
+          <label class="col-form-label"><b> إلى أمين المستودع </b></label>
+        </div>
+        <div class="col-md-3 form-group">
+          <app-dropdown-list
+          [selectedItemId]="toStoreKeeperId" [list]="storeKeepers" 
+          palceholder="إختر أمين المستودع" [busyLoading]="busyLoadingStoreKeepers"
+          idField="storeKeeperId" textField="storeKeeperName" 
+          pageSize="7" [isRequired]="false"
+          (onSelect)="selectToStoreKeeperId($event)"> 
+      </app-dropdown-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

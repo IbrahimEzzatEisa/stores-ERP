@@ -1,0 +1,92 @@
+<div class="app-page padding-tb-20">
+  <div class="page-width page-container">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <app-page-title super="الأدوات" title="إعدادات البرنامج"></app-page-title>
+        </div>
+      </div>   
+      <div class="row">
+            <div class="col-md-9 col-sm-9 form-group order-2-setting">
+                <div class="row">
+                  <div class="col-md-4 col-sm-6 form-group">
+                    <label for="Enterprise" class="col-form-label"> اسم المؤسسة </label>
+                  </div>
+                  <div class="col-md-4 col-sm-6 form-group">
+                    <input type="text" class="form-control regular-text" id="Enterprise" name="Enterprise" [(ngModel)]="settingList.companyName"
+                      #companyName="ngModel" [ngClass]="{'is-invalid': companyName.invalid  && (companyName.touched || companyName.dirty)}"
+                      required autocomplete="off">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4 col-sm-6 form-group">
+                    <label for="Calendar" class="col-form-label"> التقويم </label>
+                  </div>
+                  <div class="col-md-4 col-sm-6 form-group">
+                    <select id="Calendar" appSelectValidator="select" name="Calendar" [(ngModel)]="settingList.systemDate" class="form-control regular-text">
+                      <option value="Gregorian">ميلادى</option>
+                      <option value="UmAlQura">
+                        هجرى أم القرى
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 form-group">
+                      <label for="refresh" class="col-form-label "> تحديث البيانات كل </label>
+                    </div>
+                    <div class="col-md-4 col-sm-4 form-group">
+                      <input type="text" class="form-control regular-text" id="refresh" name="refresh" [(ngModel)]="settingList.refreshInterval"
+                        #refreshInterval="ngModel" [ngClass]="{'is-invalid': refreshInterval.invalid  && (refreshInterval.touched || refreshInterval.dirty)}"
+                        required autocomplete="off">
+                    </div>
+                    <div class="col-md-4 col-sm-2 form-group">
+                      <label for="refresh" class="col-form-label">دقيقة </label>
+                    </div>
+                  </div>
+
+              </div>
+              <div class="col-3 form-group text-left order-1-setting push-left-OSS">
+                  <button type="button" class="btn-theme btn-prim-theme vertical-align-top-OSS" (click)="saveChanges(settingList)"
+                    [disabled]="busySaving">
+                    <span class="hideTitleOSS"> حفظ التغيرات </span>
+                    <i *ngIf="busySaving" class="action-icon fa fa-spinner spinner-spin adjustMarginOSS font-awesome-scale-up"></i>
+                    <i *ngIf="!busySaving" class="action-icon fa fa-save adjustMarginOSS font-awesome-scale-up"></i>
+                  </button>
+                </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12 form-group flex">
+          <label class="checkbox-container margin-top-5">
+            <input type="checkbox" id="prevent" name="prevent" [(ngModel)]="settingList.preventMinusOut">
+            <span class="checkmark"></span>
+          </label>
+          <label for="prevent" class="col-form-label margin-right-15"> منع صرف الأصناف بدون رصيد</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12 form-group flex">
+
+          <label class="checkbox-container margin-top-5">
+            <input type="checkbox" id="maximize" name="maximize" [(ngModel)]="settingList.maximizeForms">
+            <span class="checkmark"></span>
+          </label>
+          <label for="maximize" class="col-form-label margin-right-15"> تكبير الشاشات عند فتحها </label>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12 form-group flex">
+          <label class="checkbox-container margin-top-5">
+            <input type="checkbox" id="barCode" name="barCode" [(ngModel)]="settingList.barCodeEntry">
+            <span class="checkmark"></span>
+          </label>
+          <label for="barCode" class="col-form-label margin-right-15">إدخال الأصناف بقارئ الباركود </label>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

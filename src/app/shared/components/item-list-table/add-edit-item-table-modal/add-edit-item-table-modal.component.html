@@ -1,0 +1,144 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title darker-theme-color">{{isEdit? 'تعديل': 'إضافة'}} صنف</h4>
+    <button type="button" class="close" data-dismiss="modal" (click)="close()">&times;</button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid">
+      <form #userForm="ngForm" #form="ngForm" class="master-form">
+        
+        <div class="row">
+          <div class="col-4 form-group">
+            <label>الرقم <sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <input type="number" class="form-control" name="lineNo" #lineNo="ngModel" [(ngModel)]="storesTrxItem.lineNo" disabled required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4 form-group">
+            <label>المجموعة <sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <app-dropdown-list #itemGroupDropdown
+              [selectedItemId]="storesTrxItem.itemGroupId" [list]="itemGroups" 
+              palceholder="اختر المجموعة" [busyLoading]="busyLoadingItemGroups" 
+              idField="itemGroupId" textField="itemGroupName" 
+              pageSize="7" [isRequired]="true"
+              (onSelect)="onSelectedItemGroupChange($event)"> 
+            </app-dropdown-list>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4 form-group">
+            <label>الصنف <sup>*</sup></label>
+          </div>
+          <div class="col-3 form-group">
+            <input class="form-control" name="itemId" 
+              [(ngModel)]="storesTrxItem.itemId" 
+              (ngModelChange)="onSelectedItemChange()" 
+              [disabled]="!items || items.length==0" autocomplete="off">
+          </div>
+          <div class="col-5 form-group">
+            <app-dropdown-list #itemDropdown
+              [selectedItemId]="storesTrxItem.itemId" [list]="items" 
+              palceholder="اختر الصنف" [busyLoading]="busyLoadingItems"
+              idField="itemId" textField="itemName" 
+              pageSize="7" [isRequired]="true"
+              (onSelect)="onSelectedItemChange($event)"> 
+            </app-dropdown-list>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4 form-group">
+            <label>الوحدة <sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <app-dropdown-list #unitDropdown
+              [selectedItemId]="storesTrxItem.unitId" [list]="units" 
+              palceholder="اختر الوحدة" [busyLoading]="busyLoadingUnits"
+              idField="unitId" textField="unitName" 
+              pageSize="7" [isRequired]="true"
+              (onSelect)="onSelectUnit($event)"> 
+            </app-dropdown-list>
+          </div>
+        </div>
+
+        <div *ngIf="isItemOutOrder" class="row">
+          <div class="col-4 form-group">
+            <label>الكمية المطلوبة <sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <input type="number" class="form-control" name="demandQuantity" #quantity="ngModel"
+             [(ngModel)]="storesTrxItem.demandQuantity" required autocomplete="off">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-4 form-group">
+            <label>الكمية <span *ngIf="isItemOutOrder">المصروفة </span><sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <input type="number" class="form-control" name="quantity" #demandQuantity="ngModel"
+             [(ngModel)]="storesTrxItem.quantity" (ngModelChange)="calcTotalQuantity();calcTotalPrice();" autocomplete="off" required>
+          </div>
+        </div>
+
+        <div *ngIf="!isOpeningPalance && !isReturnDocument && !isTransferCustody" class="row">
+          <div class="col-4 form-group">
+            <label>السعر <sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <input type="number" class="form-control" name="price" #price="ngModel"
+              [(ngModel)]="storesTrxItem.price" (ngModelChange)="calcTotalPrice()" autocomplete="off" required>
+          </div>
+        </div>
+        <div *ngIf="!isOpeningPalance && !isItemOutOrder &&!isReturnDocument && !isTransferCustody" class="row">
+          <div class="col-4 form-group">
+            <label>الخصم <sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <input type="number" class="form-control" name="discountValue" #discountValue="ngModel"
+              [(ngModel)]="storesTrxItem.discountValue" (ngModelChange)="calcTotalPrice()" autocomplete="off" required>
+          </div>
+        </div>
+        <div *ngIf="!isOpeningPalance && !isReturnDocument && !isTransferCustody" class="row">
+          <div class="col-4 form-group">
+            <label>إجمالى <sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <input type="number" class="form-control" name="totalPrice" #totalPrice="ngModel"
+              [(ngModel)]="storesTrxItem.totalPrice" required readonly>
+          </div>
+        </div>
+
+        <div *ngIf="!isReceiveNote" class="row">
+          <div class="col-4 form-group">
+            <label>ملاحظات</label>
+          </div>
+          <div class="col-8 form-group">
+            <textarea autocomplete="off" class="form-control border-radius-0" type="text" #notes="ngModel" [(ngModel)]="storesTrxItem.notes"
+              name="notes" maxlength="100"></textarea>
+          </div>
+        </div>
+        <div *ngIf="isReturnDocument" class="row">
+        <div class="form-group flex">
+            <label class="checkbox-container  col-8">
+                <input type="checkbox" id="custodyToStore" name="custodyToStore" [(ngModel)]="storesTrxItem.custodyToStore">
+                <span class="checkmark"></span>
+            </label>
+            <label for="custodyToStore" class="col-form-label col-4 margin-right-15"> يضاف للرصيد </label>
+        </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button title="حفظ" class="master-form-submit-button" type="submit" 
+    (click)="save()" [disabled]="busySaving || form.invalid || itemGroupDropdown.invalid || itemDropdown.invalid || unitDropdown.invalid">
+      حفظ 
+      <i [hidden]="!busySaving" class="fa fa-spinner spinner-spin"></i>
+    </button>
+    <button title="إغلاق" class="master-form-cancel-button margin-right-10" type="button" (click)="close()">إغلاق</button>
+  </div>
+</div>

@@ -1,0 +1,156 @@
+<div class="greg-hij-component-wrapper">
+
+  <div class="cal-input-row">
+    <div *ngIf="isHijri" class="cal-input-wrapper">
+      <i #calenderIconH (click)="showCalenderH()" class="fa fa-calendar" [ngClass]="{'disabled': disabled}"></i>
+      <input #calenderInputH type="text" class="form-control read-only" (click)="showCalenderH()" (keyup.esc)="hideCalenderG()"
+      (focusin)="showCalenderH()" [value]="selectedDayH"
+      [ngClass]="{
+        'is-invalid': isRequired && isDirty && !selectedDay, 
+        'disabled': disabled
+      }"
+      [readonly]="!disabled" [disabled]="disabled">
+      <div #calenderH [hidden]="!calenderVisibleH" class="calender-wrapper">
+        <div class="calender-box">
+          <div class="calender-header">
+            <button (click)="getPreviousMonthH()" class="navBtn right-arrow-btn"><div class="right-arrow"></div></button>
+            <button (click)="getNextMonthH()" class="navBtn left-arrow-btn"><div class="left-arrow"></div></button>  
+            <div class="gregorian-title">
+              <p class="header-title">
+                <span>{{monthStringer.hijriMonthToString(currentPageH.Hmonth)}}</span>
+                <span class="margin-right-5">{{currentPageH.Hyear}}</span>
+              </p>
+            </div>
+            <div class="hijri-title">
+              <p class="text-center">
+                <span>{{monthStringer.gregMonthToString(currentPageH.GmonthStart-1)}}</span>
+                <span *ngIf="currentPageH.GyearStart!=currentPageH.GyearEnd" class="margin-right-5">{{currentPageH.GyearStart}}</span>
+                -
+                <span>{{monthStringer.gregMonthToString(currentPageH.GmonthEnd-1)}}</span>
+                <span class="margin-right-5">{{currentPageH.GyearEnd}}</span>
+              </p>
+            </div>
+          </div>
+          <div class="calender-body">
+            <div class="body-week-header">
+              <div class="box-row">
+                <div class="box-week-cell">
+                  <p>السبت</p>
+                </div>
+                <div class="box-week-cell">
+                  <p>الأحد</p>
+                </div>
+                <div class="box-week-cell">
+                  <p>الأثنين</p>
+                </div>
+                <div class="box-week-cell">
+                  <p>الثلاثاء</p>
+                </div>
+                <div class="box-week-cell">
+                  <p>الأربعاء</p>
+                </div>
+                <div class="box-week-cell">
+                  <p>الخميس</p>
+                </div>
+                <div class="box-week-cell">
+                  <p>الجمعة</p>
+                </div>
+              </div>
+            </div>
+            <div class="body-days">
+              <div class="box-row">
+                <div *ngFor="let day of calenderDataH" class="box-day-cell" [ngClass]="{'today': day.today, 'active': day?.UQDate?.isTheSameDay(selectedDay)}">
+                  <div *ngIf="day" (click)="selectDay(day.UQDate)" class="box-day-cell-inner">
+                    <p class="greg-day">{{day.UQDate.Hday}}</p>
+                    <p class="hij-day">{{day.UQDate.Gday}}</p>  
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="calender-footer-links">
+            <a (click)="getTodayH()">اليوم</a>
+            <a class="text-danger" (click)="clearSelection()">مسح</a>
+            <a (click)="getSelectedDay()">المحدد</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!isHijri" class="cal-input-wrapper">
+      <i #calenderIconG (click)="showCalenderG()" class="fa fa-calendar" [ngClass]="{'disabled': disabled}"></i>
+      <input #calenderInputG type="text" class="form-control read-only" (click)="showCalenderG()" (keyup.esc)="hideCalenderG()"
+      (focusin)="showCalenderG()" [value]="selectedDayG"
+      [ngClass]="{
+        'is-invalid': isRequired && isDirty && !selectedDay, 
+        'disabled': disabled
+      }"
+      [readonly]="!disabled" [disabled]="disabled">
+      <div #calenderG [hidden]="!calenderVisibleG" class="calender-wrapper">
+        <div class="calender-box">
+          <div class="calender-header">
+            <button (click)="getPreviousMonth()" class="navBtn right-arrow-btn"><div class="right-arrow"></div></button>
+            <button (click)="getNextMonth()" class="navBtn left-arrow-btn"><div class="left-arrow"></div></button>  
+            <div class="gregorian-title">
+              <p class="header-title">
+                <span>{{monthStringer.gregMonthToString(currentPage.Gmonth)}}</span>
+                <span class="margin-right-5">{{currentPage.Gyear}}</span>
+              </p>
+            </div>
+            <div class="hijri-title">
+              <p class="text-center">
+                <span>{{monthStringer.hijriMonthToString(currentPage.HmonthStart)}}</span>
+                <span *ngIf="currentPage.HyearStart!=currentPage.HyearEnd" class="margin-right-5">{{currentPage.HyearStart}}</span>
+                -
+                <span>{{monthStringer.hijriMonthToString(currentPage.HmonthEnd)}}</span>
+                <span class="margin-right-5">{{currentPage.HyearEnd}}</span>
+    
+              </p>
+            </div>
+          </div>
+          <div class="calender-body">
+            <div class="body-week-header">
+              <div class="box-row">
+                <div class="box-week-cell">
+                  <p>السبت</p>
+                </div>
+                <div class="box-week-cell">
+                  <p>الأحد</p>
+                </div>
+                <div class="box-week-cell">
+                  <p>الأثنين</p>
+                </div>
+                <div class="box-week-cell">
+                  <p>الثلاثاء</p>
+                </div>
+                <div class="box-week-cell">
+                  <p>الأربعاء</p>
+                </div>
+                <div class="box-week-cell">
+                  <p>الخميس</p>
+                </div>
+                <div class="box-week-cell">
+                  <p>الجمعة</p>
+                </div>
+              </div>
+            </div>
+            <div class="body-days">
+              <div class="box-row">
+                <div *ngFor="let day of calenderData" class="box-day-cell" [ngClass]="{'today': day.today, 'active': day?.UQDate?.isTheSameDay(selectedDay)}">
+                  <div *ngIf="day"(click)="selectDay(day.UQDate)" class="box-day-cell-inner">
+                      <p class="greg-day">{{day.UQDate.Gday}}</p>
+                      <p class="hij-day">{{day.UQDate.Hday}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="calender-footer-links">
+            <a (click)="getToday()">اليوم</a>
+            <a class="text-danger" (click)="clearSelection()">مسح</a>
+            <a (click)="getSelectedDay()">المحدد</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

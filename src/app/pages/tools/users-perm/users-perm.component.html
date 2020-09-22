@@ -1,0 +1,124 @@
+<div class="app-page padding-tb-20">
+  <div class="page-width page-container">
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <app-page-title super="الأدوات" title="صلاحيات الشاشات"></app-page-title>
+        </div>
+      </div>
+
+      <form class="master-form">
+          <div class="row">
+            <div class="col-12 form-group text-left">
+              <button type="button" class="master-form-button" (click)="selectAll()" [disabled]="!isEdit">
+                الكل
+                <i class="fa fa-check"></i>
+              </button>
+              <button type="button" class="master-form-submit-button margin-right-10" (click)="save()" [disabled]="!isEdit || busySaving">
+                حفظ التغيرات
+                <i [hidden]="busySaving" class="fa fa-save"></i>
+                <i [hidden]="!busySaving" class="fa fa-spinner spinner-spin"></i>
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-8 col-md-12 form-group">
+              <div class="row">
+                <div class="col-md-2 form-group">
+                    <label class="col-form-label"><b>المستخدم</b></label>
+                </div>
+                <div class="col-md-5 form-group">
+                  <div class="search-input-wrapper">
+                    <input type="text" name="userId" class="app-form-control search-input" [(ngModel)]="userId"
+                    (ngModelChange)="getUserName()" (keyup.enter)="getPermissions()" [disabled]="isEdit" autocomplete="off">
+                    <i class="search-icon fa fa-search"></i>
+                    <i [hidden]="!isEdit" class="reset-icon fa fa-times clickable" (click)="reset()"></i>
+                    <i [hidden]="!busyLoadingName" class="spinner-icon fa fa-spinner spinner-spin" (click)="reset()"></i>
+                  </div>
+                </div>
+                <div class="col-md-5 form-group">
+                    <label for="numberId" class="col-form-label" [ngClass]="{'text-theme': isEdit}">{{userName}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+      </form>
+
+      <div *ngIf="isEdit && permissionsList.length > 0" class="row form-group">
+        <div class="col-12">
+          <div class="row">
+              <div class="form-group col-6">
+                <div class="search-input-wrapper">
+                  <input type="text" name="searchText" placeholder="ابحث ..." autocomplete="off" class="app-form-control search-input" [(ngModel)]="searchText">
+                  <i class="search-icon fa fa-search"></i>
+                  <i [hidden]="!searchText" class="reset-icon fa fa-times clickable" (click)="searchText=''"></i>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="col-12">
+          <div class="scrol-horizontal">
+            <table class="crud-table" sortable-table (sorted)="onSorted($event)">
+              <thead #tableHead>
+                <tr #thTableRow>
+                  <th>اسم الشاشة </th>
+                  <th class="clickable unselectable" (dblclick)="toggleCol('open')">إظهار </th>
+                  <th class="clickable unselectable" (dblclick)="toggleCol('read')">إستعراض </th>
+                  <th class="clickable unselectable" (dblclick)="toggleCol('insert')">إضافة </th>
+                  <th class="clickable unselectable" (dblclick)="toggleCol('update')">تعديل </th>
+                  <th class="clickable unselectable" (dblclick)="toggleCol('delete')">حذف </th>
+                  <th class="clickable unselectable" (dblclick)="toggleCol('print')">طباعة </th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let perms of permissionsList | filter:searchText:'caption'">
+                  <td class="clickable unselectable" (dblclick)="toggleRow(perms)"> {{perms.caption}}</td>
+                  <td>
+                    <label class="checkbox-container">
+                      <input type="checkbox" [(ngModel)]="perms.open">
+                      <span class="checkmark"></span>
+                    </label>
+                  </td>
+                  <td>
+                    <label class="checkbox-container">
+                      <input type="checkbox" [(ngModel)]="perms.read">
+                      <span class="checkmark"></span>
+                    </label>
+                  </td>
+                  <td>
+                    <label class="checkbox-container">
+                      <input type="checkbox" [(ngModel)]="perms.insert">
+                      <span class="checkmark"></span>
+                    </label>
+                  </td>
+                  <td>
+                    <label class="checkbox-container">
+                      <input type="checkbox" [(ngModel)]="perms.update">
+                      <span class="checkmark"></span>
+                    </label>
+                  </td>
+                  <td>
+                    <label class="checkbox-container">
+                      <input type="checkbox" [(ngModel)]="perms.delete">
+                      <span class="checkmark"></span>
+                    </label>
+                  </td>
+                  <td class="checkBtn">
+                    <label class="checkbox-container">
+                      <input type="checkbox" [(ngModel)]="perms.print">
+                      <span class="checkmark"></span>
+                    </label>
+                  </td>
+                </tr>
+                <tr hidden></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

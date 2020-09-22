@@ -1,0 +1,48 @@
+<div class="app-page padding-tb-20">
+  <div class="page-width page-container">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <app-page-title super="الأدوات" title="صلاحيات الفروع"></app-page-title>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-md-6 col-sm-6 form-group">
+            <div class="row">
+              <div class="col-md-3 col-sm-3 form-group">
+                <label for="numberId" class="col-form-label"><b> المستخدم </b></label>
+              </div>
+              <div class="col-md-6 col-sm-6 form-group">
+                <div class="search-input-wrapper">
+                  <input (keyup)="onKey($event)" type="search" autocomplete="off" class="app-form-control border-radius-0" id="numberId"
+                    >
+                  <i class="search-icon fa fa-search"></i>
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-3 form-group">
+                <label for="numberId" class="col-form-label"> {{userName}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="userId" >
+        
+            <div class="col-md-3 col-sm-6 form-group order-2">
+                 <select id="S_branch" name="select-branch"
+                   class="form-control regular-text"> 
+                   <optgroup *ngIf="branches" label = "اختر فرع">
+                     <option *ngFor="let branch of branches" [value]="branch.branchId">
+                             {{branch.branchName}}
+                     </option>
+                 </optgroup>
+               </select>        
+             </div>
+             <div class="col-md-3 col-sm-3 form-group order-1 push-left-OSS">
+               <button title="إضافة" (click)="addNewBranch()" class="btn-theme btn-prim-theme vertical-align-top-OSS">
+                  <span class="hideTitleOSS"> إضافة فرع</span>   <i style="transform: translateY(3px)" class="action-icon fa fa-user-plus adjustMarginOSS"></i> </button>
+             </div>
+         </div>
+    </div>
+  </div>
+</div>

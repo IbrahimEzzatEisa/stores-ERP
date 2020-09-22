@@ -1,0 +1,126 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title darker-theme-color">{{isEdit? 'تعديل': 'إضافة'}} صنف</h4>
+    <button type="button" class="close" data-dismiss="modal" (click)="close()">&times;</button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid">
+      <form #userForm="ngForm" #form="ngForm" class="master-form">
+        
+        <div class="row">
+          <div class="col-4 form-group">
+            <label>الرقم <sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <input type="number" class="form-control" name="lineNo" #lineNo="ngModel" [(ngModel)]="orderItems.lineNo" disabled required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4 form-group">
+            <label>المجموعة <sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <app-dropdown-list #groupDropdown 
+              [selectedItemId]="orderItems.itemGroupId" [list]="itemGroups" 
+              palceholder="اختر المجموعة" [busyLoading]="busyLoadingItemGroups" 
+              idField="itemGroupId" textField="itemGroupName"
+              pageSize="7" [isRequired]="false" 
+              (onSelect)="onSelectedItemGroupChange($event)">
+            </app-dropdown-list>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4 form-group">
+            <label>الصنف <sup>*</sup></label>
+          </div>
+          <div class="col-3 form-group">
+            <input class="form-control" autocomplete="off" name="itemId" 
+            [(ngModel)]="orderItems.itemId" 
+            (ngModelChange)="onSelectedItemChange()"
+            [disabled]="!items || items.length==0" maxlength="20">
+          </div>
+          <div class="col-5 form-group">
+            <app-dropdown-list #itemDropdown [selectedItemId]="orderItems.itemId"
+              [list]="items" palceholder="اختر الصنف"
+              [busyLoading]="busyLoadingItems" idField="itemId" textField="itemName"
+              pageSize="7" [isRequired]="false"
+              (onSelect)="onSelectedItemChange($event)">
+            </app-dropdown-list>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4 form-group">
+            <label>الوحدة <sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <app-dropdown-list #unitDropdown [selectedItemId]="orderItems.unitId"
+              [list]="units" palceholder="اختر الوحدة"
+              [busyLoading]="busyLoadingUnits" idField="unitId" textField="unitName"
+              pageSize="7" [isRequired]="true" 
+              (onSelect)="onSelectUnit($event)">
+            </app-dropdown-list>
+          </div>
+        </div>
+
+        <div *ngIf="isItemOutOrder" class="row">
+          <div class="col-4 form-group">
+            <label>الكمية المطلوبة <sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <input type="number" class="form-control" name="demandQuantity" #quantity="ngModel"
+             [(ngModel)]="orderItems.demandQuantity" autocomplete="off" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-4 form-group">
+            <label>الكمية <span *ngIf="isItemOutOrder">المصروفة </span><sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <input type="number" class="form-control" name="quantity" #demandQuantity="ngModel"
+             [(ngModel)]="orderItems.quantity" (ngModelChange)="calcTotalQuantity();calcTotalPrice();" autocomplete="off" required>
+          </div>
+        </div>
+
+        <div *ngIf="!isOpeningPalance" class="row">
+          <div class="col-4 form-group">
+            <label>السعر <sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <input type="number" class="form-control" name="price" #price="ngModel"
+              [(ngModel)]="orderItems.price" (ngModelChange)="calcTotalPrice()" autocomplete="off" required>
+          </div>
+        </div>
+        <div *ngIf="!isOpeningPalance" class="row">
+          <div class="col-4 form-group">
+            <label>إجمالى <sup>*</sup></label>
+          </div>
+          <div class="col-8 form-group">
+            <input type="number" class="form-control" name="totalPrice" #totalPrice="ngModel"
+              [(ngModel)]="orderItems.totalPrice" required readonly>
+          </div>
+        </div>
+
+        <div *ngIf="!isReceiveNote" class="row">
+          <div class="col-4 form-group">
+            <label>ملاحظات</label>
+          </div>
+          <div class="col-8 form-group">
+            <textarea autocomplete="off" class="form-control border-radius-0" type="text" #notes="ngModel" [(ngModel)]="orderItems.notes"
+              name="notes" maxlength="100">
+            </textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button title="حفظ" class="master-form-submit-button" type="submit" 
+    (click)="save()" [disabled]="form.invalid || groupDropdown.invalid || itemDropdown.invalid || unitDropdown.invalid" [disabled]="busySaving">
+      حفظ 
+      <!-- <i [hidden]="busySaving" class="fa fa-save"></i> -->
+      <i [hidden]="!busySaving" class="fa fa-spinner spinner-spin"></i>
+    </button>
+    <button title="إغلاق" class="master-form-cancel-button margin-right-10" type="button" (click)="close()">إغلاق</button>
+  </div>
+</div>

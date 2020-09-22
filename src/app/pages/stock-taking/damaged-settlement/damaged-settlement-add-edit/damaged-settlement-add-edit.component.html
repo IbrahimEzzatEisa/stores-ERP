@@ -1,0 +1,124 @@
+<div class="app-page padding-tb-20">
+  <div class="page-width page-container">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <app-page-title super="الجرد" title="مستند تسوية توالف  "></app-page-title>
+        </div>
+      </div> 
+      <div class="row">
+        <div class="col-md-6 col-sm-12 margin-bottom-5 order-2 padding-right-left-21">
+          <app-form-navigator 
+            [rank]="rank" [totalCount]="totalCount" [isActive]="isEdit" 
+            (onReset)="reset()" (onDelete)="delete()" 
+            (onFirst)="getFirst()" (onLast)="getLast()" 
+            (onPrevious)="getPrevious()" (onNext)="getNext()"
+            [permission]="permission">
+          </app-form-navigator>
+        </div>
+        <div class="col-md-6 col-sm-12 text-left margin-bottom-5 order-1 padding-right-left-21">
+          <button *ngIf="permission.read" title="قائمة مستند تسوية توالف" class="master-form-button"
+            routerLink="/pages/stock-taking/damaged-settlement/list">
+            <span class="hideTitleOSS"> قائمة مستند تسوية توالف </span>
+            <i class="fa fa-list margin-right-10 adjustMarginOSS"></i>
+          </button>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-12">
+          <form name="form" #form="ngForm" class="master-form">
+            <div class="row">
+              <div class="form-group col-md-6 col-sm-6">
+                <label>المسلسل<sup>*</sup> </label>
+                <input class="form-control border-radius-0" type="text" 
+                  #trxSerial="ngModel"
+                  [(ngModel)]="storeTrxes.trxSerial"
+                  [ngClass]="{'is-invalid': trxSerial.invalid && (trxSerial.dirty || trxSerial.touched)}"
+                  placeholder="ادخل المسلسل " name="serial" 
+                  disabled [readonly]="isEdit && !permission.update" 
+                  required>
+              </div>
+              <div class="form-group col-md-6 col-sm-6">
+                <label> التاريخ<sup>*</sup></label>
+                <gregorian-hijri-calendar #datepicker
+                  [hidden]="isEdit && !permission.update" 
+                  [gDate]="storeTrxes.date" (onSelect)="selectDate($event)"
+                  [isRequired]="true" [disabled]="false">
+                </gregorian-hijri-calendar>
+                <input *ngIf="isEdit && !permission.update" class="form-control" 
+                  [value]="storeTrxes.date|appDate" readonly>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 col-sm-6">
+                <label> المستودع <sup>*</sup></label>
+                <app-dropdown-list #storeDropdown
+                    [selectedItemId]="storeTrxes.storeId" [list]="stores" 
+                    palceholder="اختر المستودع" [busyLoading]="dropdownsLoading"
+                    idField="storeId" textField="storeName" 
+                    pageSize="7" [isRequired]="true" [isReadonly]="isEdit && !permission.update"
+                    (onSelect)="selectStore($event)"> 
+                </app-dropdown-list>
+                <!-- <select id="applicant" class="form-control" appSelectValidator="select" name="storeId"
+                  #storeId="ngModel" [(ngModel)]="storeTrxes.storeId"
+                  [ngClass]="{'is-invalid': storeId.invalid && (storeId.dirty || storeId.touched), 'readonly': isEdit && !permission.update}" 
+                  [disabled]="isEdit && !permission.update"
+                  required>
+                  <option *ngIf="!dropdownsLoading" [value]="undefined" disabled>اختر كود المستودع</option>
+                  <option *ngIf="dropdownsLoading" [value]="undefined">جارى التحميل...</option>
+                  <option *ngFor="let store of stores" [value]="store.storeId">
+                    {{store.storeName}}
+                  </option>
+                </select> -->
+              </div>
+              <div class="form-group col-md-6 col-sm-6">
+                <label>سبب الإتلاف </label>
+                <input class="form-control border-radius-0" type="text" 
+                  [(ngModel)]="storeTrxes.damageReason"
+                  name="damageReason" maxlength="100"
+                  [readonly]="isEdit && !permission.update">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 col-md-6 col-sm-6 form-group">
+                <label> الملاحظات</label>
+                <textarea autocomplete="off" class="form-control" 
+                  [(ngModel)]="storeTrxes.notes" type="text"
+                  name="notes" maxlength="100"
+                  [readonly]="isEdit && !permission.update">
+                </textarea> 
+              </div>
+              <div class="col-12 col-md-6 form-group">
+                <label> رقم المستند</label>
+                <input autocomplete="off" class="form-control" type="number" 
+                  [(ngModel)]="storeTrxes.recordNo" name="DocNo" maxlength="15"
+                  [readonly]="isEdit && !permission.update">
+              </div>
+            </div>
+            <hr>
+            <div *ngIf="!isEdit || (isEdit && permission.update)" class="row">
+              <div class="form-group col-md-12 text-center">
+                <button class="master-form-submit-button" 
+                  [disabled]="form.invalid || isDropdownsInvalid || busySaving" (click)="save()" [disabled]="busySaving">
+                  حفظ <i *ngIf="busySaving" class="fa fa-spinner spinner-spin"></i>
+                </button>
+                <button class="master-form-cancel-button margin-right-10" 
+                  (click)="cancel()">إلغاء
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isEdit">
+      <app-item-list-table [trxTypeId]="storeTrxes.trxTypeId" [trxSerial]="storeTrxes.trxSerial" [disableEdit]="isEdit && !permission.update">
+      </app-item-list-table>
+    </div>
+    <div class="row">
+      <div class="col-12 text-left">
+          <app-permissions-string [permission]="permission"></app-permissions-string>
+      </div>
+  </div>
+  </div>
+</div>

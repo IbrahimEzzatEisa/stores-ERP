@@ -1,0 +1,88 @@
+*{
+    border-radius:0px !important;
+}
+.Modal{
+    display: none;
+}
+.modal-content {
+    border-radius: 0px !important;
+    background-color: white!important;
+    border:0px;
+}
+.modal-header .close {
+    margin: -1rem auto -1rem -1rem !important;
+}
+.modal-header {
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+}
+.modal-footer {
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+.drawSigniture {
+    padding:auto;
+    border:5 px solid black; 
+    font-family: DroidKufi-Regular !important;
+}
+.header-color{
+    background: #067594;
+    background: -moz-linear-gradient(-45deg, #0788ab 0%, #0788ab 15%, #0788ab 15%, #067594 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(-45deg, #0788ab 0%,#0788ab 15%,#0788ab 15%,#067594 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(135deg, #0788ab 0%,#0788ab 15%,#0788ab 15%,#067594 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0788ab', endColorstr='#067594',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    color: white;
+    font-family: DroidKufi-Bold;
+    padding:2px 20px;
+}
+.colors{
+    padding-top:5px;
+}
+canvas{
+    margin:auto;
+    cursor: url('../../../../assets/imgs/Pencil-Pointer.png'), auto;
+    margin-top: 20px!important;
+}
+.colorPicker,.boxColor{
+    display: inline-block;
+    padding:0;
+    margin:0;
+    border:none;
+    height:37px;
+    width:37px;
+    border:2px solid lightgray;
+    margin:1% 0;
+}
+.Noborder{
+     border:1px solid black;
+     vertical-align: top;
+}
+.push-left{
+    margin-right: auto;
+}
+#red{
+    background-color: red;
+}
+#yellow{
+    background-color: yellow;
+}
+#green{
+    background-color: green;
+}
+#blue{
+    background-color:blue;
+}
+#black{
+    background-color: black;
+}
+#white{
+    background-color: white;
+}
+#pink{
+    background-color: pink;
+}
+.flipV{
+    transform: rotateY(180deg);
+}
+.row{
+}

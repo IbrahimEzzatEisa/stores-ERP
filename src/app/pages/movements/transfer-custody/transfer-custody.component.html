@@ -1,0 +1,215 @@
+<div class="app-page padding-tb-20">
+    <div class="page-width page-container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <p class="page-title">
+                        <span class="title-parent"> الحركات </span>
+                        <span class="title-arrow"><i class="fa fa-chevron-left"></i></span>
+                        <span class="title-current-page darker-theme-color"> مستند صرف رجيع </span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12 margin-bottom-5 order-2 padding-right-left-21">
+                    <app-form-navigator [rank]="rank" [totalCount]="totalCount" [isActive]="isEdit" (onReset)="reset()"
+                        (onDelete)="delete()" (onFirst)="getFirst()" (onLast)="getLast()" (onPrevious)="getPrevious()"
+                        (onNext)="getNext()" [permission]="permission"></app-form-navigator>
+                </div>
+                <div class="col-md-6 col-sm-12 text-left margin-bottom-5 order-1 padding-right-left-21">
+                    <button title="قائمة بيانات الأصاف" class="master-form-button"
+                        routerLink="/pages/movements/transfer-custody/list">
+                        <span class="hideTitleOSS"> قائمة مستندات صرف الرجيع </span>
+                        <i class="fa fa-list margin-right-10 adjustMarginOSS"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-12">
+                    <div class="container-fluid">
+                        <form name="form" #form="ngForm" class="master-form">
+                            <hr>
+                            <div class="row">
+                                <div class="form-group col-md-3 col-sm-6 ">
+                                    <label>الرقم الخاص </label>
+                                    <input class="form-control" type="text" name="serial" #trxSerial="ngModel"
+                                        [(ngModel)]="storeTrxes.trxSerial" placeholder="ادخل المسلسل " disabled required [ngClass]="{'is-invalid': trxSerial.invalid && (trxSerial.dirty || trxSerial.touched)}">
+                                </div>
+                                <div class="form-group col-md-3 col-sm-6">
+                                    <label>تاريخ الاستلام<sup>*</sup></label>
+                                    <gregorian-hijri-calendar #datepicker
+                                    [hidden]="isEdit && !permission.update"
+                                    [gDate]="storeTrxes.date" (onSelect)="selectDate ($event)"
+                                    [isRequired]="true" [disabled]="false">
+                                    </gregorian-hijri-calendar>
+                                    <input *ngIf="isEdit && !permission.update" class="form-control" [value]="storeTrxes.date|appDate" readonly>
+                                </div>
+                                <div class="form-group col-md-3 col-sm-6">
+                                    <label> عدد الصفحات</label>
+                                    <input autocomplete="off" class="form-control" type="text"
+                                        name="pagesCount" 
+                                        integer [ngModel]="storeTrxes.pagesCount" (ngModelChange)="storeTrxes.pagesCount=$event">
+                                </div>
+                                <div class="form-group col-md-3 col-sm-6">
+                                    <label> صاحب الصلاحية </label>
+                                    <app-dropdown-list #ownerDropdown
+                                        [selectedItemId]="storeTrxes.ownerId" [list]="employees" 
+                                        palceholder="اختر صاحب الصلاحية" [busyLoading]="dropdownsLoading"
+                                        idField="empId" textField="empName" 
+                                        pageSize="7" [isRequired]="false" [isReadonly]="isEdit && !permission.update"
+                                        (onSelect)="selectOwner($event)"> 
+                                    </app-dropdown-list>
+                                    <!-- <select id="ownerId" appSelectValidator="select" name="ownerId"
+                                        class="form-control" [(ngModel)]="storeTrxes.ownerId">
+                                        <option *ngIf="!dropdownsLoading" [value]="undefined" disabled>اختر صاحب الصلاحية </option>
+                                        <option *ngIf="dropdownsLoading" [value]="undefined">جارى التحميل...</option>
+                                        <option *ngFor="let employee of employees" [value]="employee.empId">
+                                            {{employee.empName}}
+                                        </option>
+                                    </select> -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-3 col-sm-6">
+                                    <label> جهة طلب الصرف </label>
+                                    <app-dropdown-list #demandBranchDropdown
+                                        [selectedItemId]="storeTrxes.demandBranchId" [list]="branches" 
+                                        palceholder="اختر جهة طلب الصرف" [busyLoading]="dropdownsLoading"
+                                        idField="branchId" textField="branchName" 
+                                        pageSize="7" [isRequired]="false" [isReadonly]="isEdit && !permission.update"
+                                        (onSelect)="selectDemandBranch($event)"> 
+                                    </app-dropdown-list>
+                                    <!-- <select id="applicant" appSelectValidator="select" name="demandBranchId"
+                                        class="form-control" [(ngModel)]="storeTrxes.demandBranchId">
+                                        <option *ngIf="!dropdownsLoading" [value]="undefined" disabled>إختر جهة طلب الصرف</option>
+                                        <option *ngIf="dropdownsLoading" [value]="undefined">جارى التحميل...</option>
+                                        <option *ngFor="let branch of branches" [value]="branch.branchId">
+                                            {{branch.branchName}}
+                                        </option>
+                                    </select> -->
+                                </div>
+                                <div class="form-group col-md-3 col-sm-6 ">
+                                    <label> المرفقات </label>
+                                    <input class="form-control" type="text" maxlength="50" name="attachments"
+                                        [(ngModel)]="storeTrxes.attachments">
+                                </div>
+                                <div class="form-group col-md-3 col-sm-6">
+                                    <label>المستودع<sup>*</sup></label>
+                                    <app-dropdown-list #storeDropdown
+                                        [selectedItemId]="storeTrxes.storeId" [list]="stores" 
+                                        palceholder="اختر جهة طلب الصرف" [busyLoading]="dropdownsLoading"
+                                        idField="storeId" textField="storeName" 
+                                        pageSize="7" [isRequired]="true" [isReadonly]="isEdit && !permission.update"
+                                        (onSelect)="selectStore($event)"> 
+                                    </app-dropdown-list>
+                                    <!-- <select id="applicant" appSelectValidator="select" name="storeId" #storeId="ngModel"
+                                        class="form-control" [(ngModel)]="storeTrxes.storeId" required 
+                                        [ngClass]="{'is-invalid': storeId.invalid && (storeId.dirty || storeId.touched)}">
+                                        <option *ngIf="!dropdownsLoading" [value]="undefined" disabled>اختر رمز المستودع </option>
+                                        <option *ngIf="dropdownsLoading" [value]="undefined">جارى التحميل...</option>
+                                        <option *ngFor="let store of stores" [value]="store.storeId">
+                                            {{store.storeName}}
+                                        </option>
+                                    </select> -->
+                                </div>
+                                <div class="form-group col-md-3 col-sm-6">
+                                    <label> مدير المستودع </label>
+                                    <app-dropdown-list #storeManagerDropdown
+                                        [selectedItemId]="storeTrxes.storeManagerId" [list]="employees" 
+                                        palceholder="اختر مدير المستودع" [busyLoading]="dropdownsLoading"
+                                        idField="empId" textField="empName" 
+                                        pageSize="7" [isRequired]="false" [isReadonly]="isEdit && !permission.update"
+                                        (onSelect)="selectStoreManager($event)"> 
+                                    </app-dropdown-list>
+                                    <!-- <select id="applicant" appSelectValidator="select" name="managerStoreId"
+                                        class="form-control" [(ngModel)]="storeTrxes.storeManagerId">
+                                        <option *ngIf="!dropdownsLoading" [value]="undefined" disabled>اختر مدير المستودع </option>
+                                        <option *ngIf="dropdownsLoading" [value]="undefined">جارى التحميل...</option>
+                                        <option *ngFor="let employee of employees" [value]="employee.empId">
+                                            {{employee.empName}}
+                                        </option>
+                                    </select> -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-3 col-sm-6">
+                                    <label> أمين المستودع </label>
+                                    <app-dropdown-list #storeKeeperDropdown
+                                        [selectedItemId]="storeTrxes.storeKeeperId" [list]="storeKeepers" 
+                                        palceholder="اختر أمين المستودع" [busyLoading]="dropdownsLoading"
+                                        idField="storeKeeperId" textField="storeKeeperName" 
+                                        pageSize="7" [isRequired]="false" [isReadonly]="isEdit && !permission.update"
+                                        (onSelect)="selectStoreKeeper($event)"> 
+                                    </app-dropdown-list>
+                                    <!-- <select id="applicant" appSelectValidator="select" name="storeKeeperId"
+                                        class="form-control" [(ngModel)]="storeTrxes.storeKeeperId">
+                                        <option *ngIf="!dropdownsLoading" [value]="undefined" disabled>اختر أمين المستودع </option>
+                                        <option *ngIf="dropdownsLoading" [value]="undefined">جارى التحميل...</option>
+                                        <option *ngFor="let storeKeeper of storeKeepers"
+                                            [value]="storeKeeper.storeKeeperId">
+                                            {{storeKeeper.storeKeeperName}}
+                                        </option>
+                                    </select> -->
+                                </div>
+                                <div class="form-group col-md-3 col-sm-6">
+                                    <label> رقم المستند</label>
+                                    <input autocomplete="off" class="form-control" type="number" maxlength="15"
+                                        name="RecordNo" [(ngModel)]="storeTrxes.recordNo">
+                                </div>
+                                <div class="form-group col-md-3 col-sm-6">
+                                    <label>المستلم </label>
+                                    <app-dropdown-list #recipientDropdown
+                                        [selectedItemId]="storeTrxes.recipientId" [list]="employees" 
+                                        palceholder="اختر المستلم" [busyLoading]="dropdownsLoading"
+                                        idField="empId" textField="empName" 
+                                        pageSize="7" [isRequired]="false" [isReadonly]="isEdit && !permission.update"
+                                        (onSelect)="selectRecipient($event)"> 
+                                    </app-dropdown-list>
+                                    <!-- <select id="applicant" appSelectValidator="select" name="recipientId"
+                                        class="form-control" [(ngModel)]="storeTrxes.recipientId">
+                                        <option *ngIf="!dropdownsLoading" [value]="undefined" disabled>اختر المستلم </option>
+                                        <option *ngIf="dropdownsLoading" [value]="undefined">جارى التحميل...</option>
+                                        <option *ngFor="let employee of employees" [value]="employee.empId">
+                                            {{employee.empName}}
+                                        </option>
+                                    </select> -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label> ملاحظات</label>
+                                    <textarea autocomplete="off" class="form-control" type="text" maxlength="100"
+                                        name="notes" [(ngModel)]="storeTrxes.notes"></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12 text-center">
+                                    <button class="master-form-submit-button" [disabled]="form.invalid || busySaving || isDropdownsInvalid" (click)="save()">
+                                        حفظ <i *ngIf="busySaving" class="fa fa-spinner spinner-spin"></i>
+                                    </button>
+                                    <button class="master-form-cancel-button margin-right-10" (click)="cancel()">إلغاء
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-left">
+                                    <app-permissions-string [permission]="permission"></app-permissions-string>
+                                </div>
+                            </div>
+                            <div *ngIf="isEdit">
+                                <div class="row">
+                                    <div class=" form-group col-md-12 col-sm-12 col-xs-12 ">
+                                        <label for="items" class="col-form-label font-size-16"> تفاصيل المستند </label>
+                                        <app-item-list-table [trxTypeId]="storeTrxes.trxTypeId" [trxSerial]="storeTrxes.trxSerial"
+                                            [disableEdit]="!permission.update && isEdit">
+                                        </app-item-list-table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

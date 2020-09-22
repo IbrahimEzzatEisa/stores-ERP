@@ -1,0 +1,39 @@
+<div class="app-page padding-tb-20">
+    <div class="page-width page-container">
+      <form class="container-fluid master-form" name="form" #form="ngForm">
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+            <app-page-title super="تقارير الحركات" title=" مستندات  الإرجاع"></app-page-title>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 text-left form-group">
+            <button class="btn-theme btn-theme-OSS btn-alt-theme margin-right-4-OSS margin-right-5" title="طباعة" 
+              [disabled]="busyPrinting" (click)="printReport()">
+              <i class="action-icon fa fa-print fa-action-md"></i>
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3  form-group">
+            <label class="col-form-label"><b> من تاريخ </b></label>
+          </div>
+          <div class="col-md-3 form-group ">
+            <gregorian-hijri-calendar [gDate]="txtFromDate" [disabled]="false"
+              (onSelect)="selectFromDate($event)">
+            </gregorian-hijri-calendar>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3  form-group">
+            <label class="col-form-label"><b> إلى تاريخ </b></label>
+          </div>
+          <div class="col-md-3 form-group ">
+            <gregorian-hijri-calendar [gDate]="txtToDate" [disabled]="false"
+              (onSelect)="selectToDate($event)">
+            </gregorian-hijri-calendar>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

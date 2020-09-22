@@ -1,0 +1,235 @@
+<div class="row">
+  <div class="col-md-6 col-sm-12 form-group">
+    <div class="search-input-wrapper">
+      <input type="search"
+        [(ngModel)]="filterParams.queryString"
+        class="app-form-control"
+        (keyup)="onSearch()"
+        autocomplete="off">
+      <i class="search-icon fa fa-search"></i>
+    </div>
+  </div>
+  <div class="col-md-6 col-sm-12 text-left form-group">
+    <div class="dropdown display-inline margin-right-5">
+      <button class="select-page-size padding-shrink-lr dropdown-toggle" 
+      type="button" id="dropdownMenuButton" data-toggle="dropdown" 
+      aria-haspopup="true" aria-expanded="false">
+        {{filterParams.pagination.pageSize}}
+      </button> 
+      <div class="dropdown-menu  theme-dropdown-menu min-width-40" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item theme-dropdown"(click)="setPageSize(10)" [ngClass]="{'selectedSize':filterParams.pagination.pageSize==10}">10</a>
+        <a class="dropdown-item theme-dropdown"(click)="setPageSize(20)" [ngClass]="{'selectedSize':filterParams.pagination.pageSize==20}">20</a>
+        <a class="dropdown-item theme-dropdown"(click)="setPageSize(30)" [ngClass]="{'selectedSize':filterParams.pagination.pageSize==30}">30</a>
+        <a class="dropdown-item theme-dropdown"(click)="setPageSize(40)" [ngClass]="{'selectedSize':filterParams.pagination.pageSize==40}">40</a>
+        <a class="dropdown-item theme-dropdown"(click)="setPageSize(50)" [ngClass]="{'selectedSize':filterParams.pagination.pageSize==50}">50</a>
+      </div>
+    </div>
+    <button (click)="getAll()"
+      class="btn-table-action">
+      تحديث
+      <i class="fas fa-sync-alt"></i>
+    </button>
+    <button *ngIf="permission.print"
+      class="btn-table-action"
+      [ngClass]="{'user-loading': busyPrinting}"
+      [disabled]="busyPrinting"
+      [title]="busyPrinting ? 'برجاء الانتظار' : 'طباعة'"
+      (click)="print()">
+      طباعة
+      <i class="fa fa-print"></i>
+    </button>
+  </div>
+</div>
+<hr>
+<div class="theme-table-wrapper form-group">
+  <div class="scrol-horizontal">
+    <table class="table theme-table table-hover"
+      sortable-table
+      (sorted)="onSorted($event)">
+      <thead class="bgColorBlue">
+        <tr>
+          <th class="theme-table-center clickable"
+            style="width: 25%"
+            [sortable-column]="codeKey"
+            scope="col">{{codeLabel}}</th>
+          <th class="theme-table-center clickable"
+            [sortable-column]="nameKey"
+            scope="col">{{nameLabel}}</th>
+          <th *ngIf="_extraColumn1"
+            class="theme-table-center">{{_extraColumn1.label}}</th>
+          <th *ngIf="permission.insert || permission.delete || permission.update"
+            class="theme-table-center clickable"
+            style="min-width:150px;width: 150px"
+            scope="col">خيارات</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="_itemsList">
+        <tr ngForm
+          #updateForm="ngForm"
+          *ngFor="let item of filteredList; let i = index">
+          <td class="theme-table-center theme-table-Vcenter add-new-td"
+            style="width: 25%">
+            <input type="number"
+              class="form-control text-center"
+              name="itemCode{{i}}"
+              [(ngModel)]="item[codeKey]"
+              disabled
+              required>
+          </td>
+          <td class="theme-table-center theme-table-Vcenter add-new-td">
+            <input type="text"
+              class="form-control"
+              placeholder="ادخل {{nameLabel}}"
+              autocomplete="off"
+              (focusin)="select(item)"
+              name="itemName{{i}}"
+              [pattern]="pattern"
+              [(ngModel)]="item[nameKey]"
+              [disabled]="!permission.update"
+              title="من فضلك قم بادخال حروف فقط"
+              required
+              (keypress)="preventNumberInput($event)"
+              #labelField="ngModel">
+          </td>
+          <td *ngIf="_extraColumn1"
+            class="theme-table-center theme-table-Vcenter add-new-td">
+            <input *ngIf="!_extraColumn1.select && !_extraColumn1.check"
+              type="text"
+              class="form-control"
+              placeholder="ادخل {{_extraColumn1.label}}"
+              autocomplete="off"
+              (focusin)="select(item)"
+              name="_extraColumn1{{i}}"
+              [(ngModel)]="item[_extraColumn1.key]"
+              [disabled]="!permission.update"
+              required>
+            <select *ngIf="_extraColumn1.select"
+              class="form-control"
+              (focusin)="select(item)"
+              [disabled]="!permission.update"
+              required
+              name="_extraColumn1{{i}}"
+              [(ngModel)]="item[_extraColumn1.key]">
+              <option *ngFor='let selectItem of _extraColumn1.select.list'
+                [value]="selectItem[_extraColumn1.select.valueKey]">{{selectItem[_extraColumn1.select.displayTextKey]}}
+              </option>
+            </select>
+          </td>
+          <td *ngIf="permission.insert || permission.delete || permission.update"
+            class="theme-table-center theme-table-Vcenter"
+            style="min-width:150px;width: 150px">
+            <button *ngIf="permission.delete"
+              [hidden]="item['busy']||item['selected']"
+              type="button"
+              class="btn-theme-sm btn-theme-danger"
+              (click)="delete(item)">
+              <i title="حذف"
+                class="fas fa-trash clickable"></i></button>
+            <button [hidden]="item['busy']||!item['selected']"
+              class="clickable btn-theme-sm btn-alt-theme"
+              (click)="update(item)"
+              [disabled]="updateForm.invalid"> <i title="حفظ"
+                class="fa fa-check"></i>
+            </button>
+            <button [hidden]="item['busy']||!item['selected']"
+              (click)="rollBack(item)"
+              type="button"
+              class="btn-theme-sm btn-theme-danger border-radius-0">
+              <i title="إلغاء"
+                class="fa fa-times clickable"
+                aria-hidden="true"></i>
+            </button>
+            <span [hidden]="!item['busy']">
+              <i class="fa fa-spinner fa-2x spinner-spin color-alt-theme"></i>
+            </span>
+          </td>
+        </tr>
+
+        <tr *ngIf="permission.insert"
+          ngForm
+          #newForm="ngForm">
+          <td class="theme-table-center theme-table-Vcenter add-new-td"
+            style="width: 25%">
+            <input type="text"
+              placeholder="كود {{nameLabel}}"
+              class="form-control text-success text-center"
+              name="newItemCode"
+              [(ngModel)]='newItem[codeKey]'
+              disabled>
+          </td>
+          <td class="theme-table-center theme-table-Vcenter add-new-td">
+            <input type="text"
+              placeholder="ادخل {{nameLabel}}"
+              class="form-control text-success"
+              name="newItemName"
+              [(ngModel)]='newItem[nameKey]'
+              required
+              autocomplete="off"
+              ngbPopover={{ngbPopover}}
+              (keypress)="preventNumberInput($event)"
+              #newrecored="ngModel">
+
+          </td>
+          <td *ngIf="_extraColumn1"
+            class="theme-table-center theme-table-Vcenter add-new-td">
+            <input *ngIf="!_extraColumn1.select && !_extraColumn1.check"
+              type="text"
+              class="form-control"
+              placeholder="ادخل {{_extraColumn1.label}}"
+              name="_extraColumn1"
+              [(ngModel)]="newItem[_extraColumn1.key]"
+              required
+              autocomplete="off">
+            <select *ngIf="_extraColumn1.select"
+              class="form-control"
+              name="_extraColumn1"
+              [(ngModel)]="newItem[_extraColumn1.key]"
+              required>
+              <option *ngFor='let selectItem of _extraColumn1.select.list'
+                [value]="selectItem[_extraColumn1.select.valueKey]">{{selectItem[_extraColumn1.select.displayTextKey]}}
+              </option>
+            </select>
+          </td>
+          <td class="theme-table-center theme-table-Vcenter add-new-td"
+            style="min-width:150px;width: 150px">
+            <button class="clickable btn-theme-sm btn-alt-theme"
+              type="button"
+              [disabled]="newForm.invalid"
+              (click)="create()">
+              <i [hidden]="_busyCreating"
+                class="fa fa-check clickable"></i>
+              <i [hidden]="!_busyCreating"
+                class="fa fa-spinner spinner-spin color-alt-theme"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-6 col-md-12 form-group">
+    <div *ngIf="!(filterParams.pagination.totalPages==1)"
+      class="scrol-horizontal">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination regular-text">
+          <li class="page-item"><a class="page-link"
+              (click)="changePage(filterParams.pagination.pageNumber-1)"
+              [ngClass]="{'disabled-btn': filterParams.pagination.pageNumber==1}">السابق</a></li>
+          <li *ngFor=" let page of ' '.repeat(filterParams.pagination.totalPages).split('') , let i = index"
+            class="page-item"
+            [ngClass]="{'active': filterParams.pagination.pageNumber==(i+1)}">
+            <a class="page-link"
+              (click)="changePage(i+1)"> {{i+1}}</a></li>
+          <li class="page-item"><a class="page-link"
+              (click)="changePage(filterParams.pagination.pageNumber+1)"
+              [ngClass]="{'disabled-btn': filterParams.pagination.pageNumber==totalPages}">التالى</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <div class="col-lg-6 col-md-12 form-group text-left">
+    <app-permissions-string *ngIf="permission"
+      [permission]="permission"></app-permissions-string>
+  </div>
+</div>

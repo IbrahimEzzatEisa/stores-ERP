@@ -1,0 +1,122 @@
+<div class="app-page padding-tb-20">
+    <div class="page-width page-container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <app-page-title super="الحركات" title="طلب أصناف للقسم"></app-page-title>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-6 col-sm-12 margin-bottom-5 order-2 padding-right-left-21">
+                    <app-form-navigator [rank]="rank" [totalCount]="totalCount" [isActive]="isEdit" (onReset)="reset()"
+                        (onDelete)="delete()" (onFirst)="getFirst()" (onLast)="getLast()" (onPrevious)="getPrevious()"
+                        (onNext)="getNext()" [permission]="permission"></app-form-navigator>
+                </div>
+                <div class="col-md-6 col-sm-12 text-left margin-bottom-5 order-1 padding-right-left-21">
+                    <button title="قائمة طلب أصناف للقسم" class="master-form-button" routerLink="/pages/movements/mngr-orders/list">
+                        <span class="hideTitleOSS"> قائمة طلب أصناف للقسم </span>
+                        <i class="fa fa-list margin-right-10 adjustMarginOSS"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-12">
+                    <form name="form" #form="ngForm" class="master-form">
+                        <hr>
+                        <div class="row">
+                            <div class="form-group col-md-4 col-sm-6">
+                                <label>المسلسل<sup>*</sup></label>
+                                <input class="form-control border-radius-0" type="text" placeholder="ادخل المسلسل "
+                                    [(ngModel)]="MangrOrder.serial" #serial="ngModel" name="serial"
+                                    [ngClass]="{'is-invalid': serial.invalid && (serial.dirty || serial.touched)}" placeholder="ادخل المسلسل "
+                                    disabled required [readonly]="isEdit && !permission.update">
+                            </div>
+                            <div class="form-group col-md-4 col-sm-6">
+                                <label>التاريخ<sup>*</sup></label>
+                                <gregorian-hijri-calendar #datepicker
+                                    [hidden]="isEdit && !permission.update"
+                                    [gDate]="MangrOrder.date" (onSelect)="selectDate($event)" 
+                                    [isRequired]="true" [disabled]="false">
+                                </gregorian-hijri-calendar>
+                                <input *ngIf="isEdit && !permission.update" class="form-control" [value]="MangrOrder.date|appDate" readonly>
+                            </div>
+                            <div class="form-group col-md-4 col-sm-6">
+                                <label>القسم<sup>*</sup></label>
+                                <app-dropdown-list #branchDropdown
+                                    [selectedItemId]="MangrOrder.branchId" [list]="branches" 
+                                    palceholder="اختر القسم" [busyLoading]="dropdownsLoading"
+                                    idField="branchId" textField="branchName" 
+                                    pageSize="7" [isRequired]="true" [isReadonly]="isEdit && !permission.update"
+                                    (onSelect)="selectBranch($event)"> 
+                                </app-dropdown-list>
+                                <!-- <select id="applicant" appSelectValidator="select" name="branchId" #branchId="ngModel" 
+                                    [(ngModel)]="MangrOrder.branchId"
+                                    [ngClass]="{'is-invalid': branchId.invalid && (branchId.dirty || branchId.touched), 
+                                    'readonly': isEdit && !permission.update}" class="form-control"
+                                    required [disabled]="isEdit && !permission.update">
+                                    <option *ngIf="!dropdownsLoading" [value]="undefined" disabled>اختر القسم
+                                    </option>
+                                    <option *ngIf="dropdownsLoading" [value]="undefined">جارى التحميل...</option>
+                                    <option *ngFor="let branch of branches" [value]="branch.branchId">
+                                        {{branch.branchName}}
+                                    </option>
+                                </select> -->
+                            </div> 
+                            <div class="form-group col-md-4 col-sm-6">
+                                <label> ملاحظات</label>
+                                <textarea autocomplete="off" class="form-control border-radius-0" type="text"
+                                    [(ngModel)]="MangrOrder.notes" name="notes" [readonly]="isEdit && !permission.update" 
+                                    maxlength="200"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 col-sm-12 form-group flex">
+                                <label class="checkbox-container margin-top-5">
+                                    <input type="checkbox" id="approved" name="approved" [(ngModel)]="MangrOrder.approved" 
+                                        [disabled]="isEdit && !permission.update"
+                                        required>
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label for="approved" class="margin-right-15"> تمت الموافقة</label>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-12 form-group flex">
+                                <label class="checkbox-container margin-top-5">
+                                    <input type="checkbox" id="outOrder"    
+                                        name="outOrder" required
+                                        [(ngModel)]="MangrOrder.outOrder" 
+                                        [disabled]="isEdit && !permission.update">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label for="outOrder" class="margin-right-15"> تم الصرف</label>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="row" *ngIf="!isEdit || (isEdit && permission.update)">
+                            <div class="form-group col-md-12 text-center">
+                                <button class="master-form-submit-button" [disabled]="form.invalid || busySaving || branchDropdown.invalid || datepicker.invalid" (click)="save()">
+                                    حفظ <i *ngIf="busySaving" class="fa fa-spinner spinner-spin"></i>
+                                </button>
+                                <button class="master-form-cancel-button margin-right-10" (click)="cancel()">إلغاء
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div *ngIf="isEdit">
+                        <div class="row">
+                            <div class=" form-group col-md-12 col-sm-12 col-xs-12 ">
+                            <app-mngr-orders-items [serial]="MangrOrder.serial" [disableEdit]="!permission.update && isEdit">
+                            </app-mngr-orders-items>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-left">
+                          <app-permissions-string [permission]="permission"></app-permissions-string>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

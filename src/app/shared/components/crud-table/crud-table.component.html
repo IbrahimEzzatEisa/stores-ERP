@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="col-12">
+        <div class="scrol-horizontal">
+            <table class="crud-table crud">
+                <thead>
+                    <tr>
+                        <th class="clickable" *ngFor="let config of _config">
+                            {{config.label}}
+                        </th>
+                        <th class="text-center" style="min-width: 100px;" *ngIf="!disableEdit">خيارات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr [hidden]="item['status']==isDeletedStatus" *ngFor="let item of _listItems; let i=index">
+                        <td *ngFor="let config of _config">
+                            <input *ngIf="!config.select && !config.check" type="text" class="form-control" #itemkey="ngModel"
+                                [ngClass]="{'is-invalid': itemkey.invalid && (itemkey.dirty || itemkey.touched)}" name="itemkey{{i}}"
+                                [(ngModel)]="item[config.key]" [readonly]="disableEdit" required autocomplete="off">
+                            <select *ngIf="config.select && !config.check" class="form-control" #itemkey="ngModel"
+                                [ngClass]="{'is-invalid': itemkey.invalid && (itemkey.dirty || itemkey.touched)}" name="itemkey{{i}}"
+                                [(ngModel)]="item[config.key]" [disabled]="disableEdit" [attr.readonly]="disableEdit" required>
+                                <option *ngFor="let option of config.select.list" [value]="option[config.select.valueKey]">{{option[config.select.displayTextKey]}}</option>
+                            </select>
+                        </td>
+                        <td class="actions" *ngIf="!disableEdit">
+                            <button title="حذف" (click)="delete(item, i)">
+                                <i class="fas fa-trash text-danger"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr ngForm #addNewForm="ngForm" *ngIf="!disableEdit">
+                        <td *ngFor="let config of _config; let i = index">
+                            <input *ngIf="!config.select && !config.check" [type]="config.type || 'text'" class="form-control"
+                                name="itemkey{{i}}" placeholder="ادخل {{config.label}}" [(ngModel)]="itemNewRow[config.key]"
+                                required autocomplete="off">
+                            <select *ngIf="config.select && !config.check" class="form-control" name="itemkey{{i}}"
+                                [(ngModel)]="itemNewRow[config.key]" required>
+                                <option [value]="undefined" disabled>اختر {{config.label}}</option>
+                                <option *ngFor="let option of config.select.list" [value]="option[config.select.valueKey]">{{option[config.select.displayTextKey]}}</option>
+                            </select>
+                        </td>
+                        <td class="actions">
+                            <button title="إضافة" (click)="create(itemNewRow)" [disabled]="addNewForm.invalid">
+                                <i class="fa fa-plus text-success"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

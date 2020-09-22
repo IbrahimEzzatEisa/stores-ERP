@@ -1,0 +1,47 @@
+<div class="app-page padding-tb-20">
+  <div class="page-width page-container">
+      <div class="container-fluid master-form">
+          <div class="row">
+              <div class="col-md-12 col-sm-12">
+                  <app-page-title super="تقارير المستودعات" title="مواقع وساحات العمل"></app-page-title>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-12 col-sm-12 text-left form-group">
+                <button class="btn-theme btn-theme-OSS btn-alt-theme margin-right-4-OSS margin-right-5" title="طباعة" 
+                [disabled]="busyPrinting" (click)="printReport()">
+                <i class="action-icon fa fa-print fa-action-md"></i>
+            </button>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-3  form-group">
+                  <label class="col-form-label"><b>  من رمز موقع </b></label>
+              </div>
+              <div class="col-md-3 form-group">
+                  <app-dropdown-list
+                  [selectedItemId]="fromWorkPlaceId" [list]="workplaces" 
+                  palceholder="اختر موقع  " [busyLoading]="busyLoadingWorkPlaces"
+                  idField="workPlaceId" textField="workPlaceName" 
+                  pageSize="7" [isRequired]="false"
+                  (onSelect)="selectFromWorkplaceId($event)"> 
+              </app-dropdown-list>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3  form-group">
+                <label class="col-form-label"><b>  إلى رمز موقع </b></label>
+            </div>
+            <div class="col-md-3 form-group">
+                <app-dropdown-list
+                [selectedItemId]="toWorkPlaceId" [list]="workplaces" 
+                palceholder="اختر موقع  " [busyLoading]="busyLoadingWorkPlaces"
+                idField="workPlaceId" textField="workPlaceName" 
+                pageSize="7" [isRequired]="false"
+                (onSelect)="selectToWorkplaceId($event)"> 
+            </app-dropdown-list>
+            </div>
+        </div>
+      </div>
+  </div>
+</div>

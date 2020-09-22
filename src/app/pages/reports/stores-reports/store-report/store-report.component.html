@@ -1,0 +1,41 @@
+<div class="app-page padding-tb-20">
+    <div class="page-width page-container">
+        <div class="container-fluid master-form">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <app-page-title super="تقارير المستودعات" title="بيانات المستودعات"></app-page-title>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 text-left form-group">
+                    <button class="btn-theme btn-theme-OSS btn-alt-theme margin-right-4-OSS margin-right-5"
+                        title="طباعة" [disabled]="busyPrinting" (click)="printReport()">
+                        <i class="action-icon fa fa-print fa-action-md"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3  form-group">
+                    <label class="col-form-label"><b> من رمز المستودع </b></label>
+                </div>
+                <div class="col-md-3 form-group">
+                    <app-dropdown-list [selectedItemId]="fromStoreId" [list]="stores" palceholder="إختر  المستودع"
+                        [busyLoading]="busyLoadingStores" idField="storeId" textField="storeName" pageSize="7"
+                        [isRequired]="false" (onSelect)="selectFromStoreId($event)">
+                    </app-dropdown-list>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3  form-group">
+                    <label class="col-form-label"><b> إلى رمز المستودع </b></label>
+                </div>
+                <div class="col-md-3 form-group">
+                    <app-dropdown-list [selectedItemId]="toStoreId" [list]="stores" palceholder="إختر  المستودع"
+                        [busyLoading]="busyLoadingStores" idField="storeId" textField="storeName" pageSize="7"
+                        [isRequired]="false" (onSelect)="selectToStoreId($event)">
+                    </app-dropdown-list>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

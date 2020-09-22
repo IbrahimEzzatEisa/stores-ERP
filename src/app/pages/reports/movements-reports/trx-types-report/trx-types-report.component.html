@@ -1,0 +1,47 @@
+<div class="app-page padding-tb-20">
+  <div class="page-width page-container">
+    <form class="container-fluid master-form" name="form" #form="ngForm">
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <app-page-title super="تقارير الحركات" title="المراجع الإدارية"></app-page-title>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 text-left form-group">
+          <button class="btn-theme btn-theme-OSS btn-alt-theme margin-right-4-OSS margin-right-5" title="طباعة" 
+              (click)="printReport()" [disabled]="busyPrinting">
+              <i class="action-icon fa fa-print fa-action-md"></i>
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3  form-group">
+          <label class="col-form-label"><b> من رمز مرجع </b></label>
+        </div>
+        <div class="col-md-3 form-group">
+          <select id="applicant" name="fromTrxTypeId" class="form-control" [(ngModel)]="fromTrxTypeId" #trxTypeFromId>
+            <option value="0" disabled>إختر رمز</option>
+            <option *ngFor="let trxType of trxTypes" [value]="trxType.trxId" 
+              [ngClass]="{'is-invalid': trxTypeFromId.invalid && (trxTypeFromId.dirty || trxTypeFromId.touched)}">
+              {{trxType.trxName}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3  form-group">
+          <label class="col-form-label"><b> إلى رمز مرجع </b></label>
+        </div>
+        <div class="col-md-3 form-group">
+          <select id="applicant" name="toTrxTypeId" class="form-control" [(ngModel)]="toTrxTypeId" #trxTypeToId
+            [ngClass]="{'is-invalid': trxTypeToId.invalid && (trxTypeToId.dirty || trxTypeToId.touched)}">
+            <option value="0" disabled>إختر رمز</option>
+            <option *ngFor="let trxType of trxTypes" [value]="trxType.trxId">
+              {{trxType.trxName}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,104 @@
+<div class="app-page padding-tb-20">
+    <div class="page-width page-container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <app-page-title super="المستودعات" title="مواقع وساحات العمل"></app-page-title>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-12 form-group order-2 padding-right-left-21">
+                    <app-form-navigator [rank]="rank" [totalCount]="totalCount" [isActive]="isEdit" (onReset)="reset()"
+                        (onDelete)="delete()" (onFirst)="getFirst()" (onLast)="getLast()" (onPrevious)="getPrevious()"
+                        (onNext)="getNext()" [permission]="permission"></app-form-navigator>
+                </div>
+                <div class="col-md-6 col-sm-12 text-left form-group order-1 padding-right-left-21">
+                    <button *ngIf="permission.print" class="btn-table-action" [ngClass]="{'user-loading': busyPrinting}"
+                        [disabled]="busyPrinting || !isEdit" [title]="busyPrinting ? 'برجاء الانتظار' : 'طباعة'"
+                        (click)="print()">
+                        طباعة
+                        <i class="fa fa-print"></i>
+                    </button>
+                    <button  *ngIf="permission.read" title="قائمة مساحات العمل" class="master-form-button"
+                        routerLink="/pages/stores-info/work-places/list">
+                        <span class="hideTitleOSS"> قائمة مساحات العمل </span>
+                        <i class="fa fa-list margin-right-10 adjustMarginOSS"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-12">
+                    <div class="container-fluid">
+                        <form name="form" #form="ngForm" class="master-form">
+                            <hr>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>كود مساحة العمل<sup>*</sup></label>
+                                    <input class="form-control" type="number" name="workPlaceId"
+                                        placeholder="ادخل كود مساحة العمل"
+                                        [ngClass]=" {'is-invalid':workPlaceId.dirty && workPlaceId.invalid}"
+                                        #workPlaceId="ngModel" [(ngModel)]="workPlace.workPlaceId"
+                                        [readonly]="isEdit && !permission.update" disabled>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>اسم مساحة العمل<sup>*</sup></label>
+                                    <input autocomplete="off" class="form-control" type="text" name="workPlaceName"
+                                        placeholder="ادخل اسم مساحة العمل" #workPlaceName="ngModel"
+                                        [ngClass]=" {'is-invalid':workPlaceName.invalid && (workPlaceName.dirty || workPlaceName.touched)}"
+                                        [(ngModel)]="workPlace.workPlaceName" [readonly]="isEdit && !permission.update"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>الجوال 1</label>
+                                    <input autocomplete="off" class="form-control" type="text" name="phone1"
+                                        placeholder="ادخل الجوال 1" [(ngModel)]="workPlace.phone1"
+                                        [readonly]="isEdit && !permission.update">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>الجوال 2</label>
+                                    <input autocomplete="off" class="form-control" type="text" name="phone2"
+                                        placeholder="ادخل الجوال 2" [(ngModel)]="workPlace.phone2"
+                                        [readonly]="isEdit && !permission.update">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>الفاكس</label>
+                                    <input autocomplete="off" class="form-control" type="text" name="fax"
+                                        placeholder="ادخل الفاكس" [(ngModel)]="workPlace.fax"
+                                        [readonly]="isEdit && !permission.update">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>العنوان</label>
+                                    <input autocomplete="off" class="form-control" type="text" name="address"
+                                        placeholder="ادخل العنوان" [(ngModel)]="workPlace.address"
+                                        [readonly]="isEdit && !permission.update">
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div *ngIf="!isEdit || (isEdit && permission.update)" class="row">
+                                <div class="form-group col-md-12 text-center">
+                                    <button class="master-form-submit-button" [disabled]="form.invalid"
+                                        (click)="save()">
+                                        حفظ <i *ngIf="busySaving" class="fa fa-spinner spinner-spin"></i>
+                                    </button>
+                                    <button class="master-form-cancel-button margin-right-10" (click)="cancel()">إلغاء
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-left">
+                                    <app-permissions-string [permission]="permission"></app-permissions-string>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

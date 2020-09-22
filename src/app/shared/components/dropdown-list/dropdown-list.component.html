@@ -1,0 +1,42 @@
+<div #componentRef class="app-dropdown-list">
+  <input class="form-control" 
+  [placeholder]="busyLoading? 'جارى التحميل...': palceholder"
+  (focus)="showDropdown()"
+  [ngModel]="_selectedItem[textField]"
+  #selectInput="ngModel" name="selectInput"
+  [ngClass]="{
+    'is-invalid': isRequired && isDirty && _selectedItem && !_selectedItem[idField], 
+    'read-only': !isReadonly,
+    'disabled': _isDisabled && !isReadonly
+  }"
+  readonly
+  [disabled]="_isDisabled">
+  <i *ngIf="!isReadonly && !_isDisabled" class="dropdown-icon fas fa-caret-down clickable" (click)="showDropdown()" [ngClass]="{'isOpen': isOpen}"></i>
+  <i *ngIf="!isReadonly && !_isDisabled"  [hidden]="_selectedItem && !_selectedItem[idField]" class="delete-icon fas fa-times clickable" (click)="resetSelectedItem(true)"></i>
+  <div *ngIf="isOpen && !isReadonly" class="dropdown-list">
+    <div class="list-search">
+      <input #searchInput type="text" [(ngModel)]="searchText" (ngModelChange)="onSearch()" placeholder="بحث">
+    </div>
+    <ul class="search-results">
+      <p class="text-center" *ngIf="filteredList.length==0">لا يوجد نتائج</p>
+      <li *ngFor="let listItem of filteredList" (click)="select(listItem)">{{listItem[textField]}}</li>
+    </ul>
+    <div *ngIf="totalPages>1" class="master-form-nav text-center">
+      <button title="الأول" (click)="changePage(1)" class="right" [disabled]="pageNumber==1">
+        <i class="fa fa-angle-double-right"></i>
+      </button>
+      <button title="السابق" (click)="changePage(pageNumber-1)" class="right" [disabled]="pageNumber==1">
+        <i class="fa fa-angle-right"></i>
+      </button>
+      <span class="master-form-ranking">
+        <span class="rank">{{pageNumber}}</span> - {{totalPages}}
+      </span>
+      <button title="التالي" (click)="changePage(pageNumber+1)" class="left" [disabled]="pageNumber==totalPages">
+        <i class="fa fa-angle-left"></i>
+      </button>
+      <button title="الأخير" (click)="changePage(totalPages)" class="left" [disabled]="pageNumber==totalPages">
+        <i class="fa fa fa-angle-double-left"></i>
+      </button>
+    </div>
+  </div>
+</div>

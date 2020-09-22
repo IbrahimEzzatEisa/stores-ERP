@@ -1,0 +1,69 @@
+<div class="app-page padding-tb-20">
+  <div class="page-width page-container">
+    <div class="container-fluid formStyle">
+      <form name="form" #form="ngForm" class="master-form">
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
+            <app-page-title super="تقارير الأصناف" title=" بيانات الأصناف"></app-page-title>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 text-left form-group">
+            <button class="btn-theme btn-theme-OSS btn-alt-theme margin-right-4-OSS margin-right-5" title="طباعة" 
+              (click)="printReport()" [disabled]="busyPrinting || form.invalid">
+              <i class="action-icon fa fa-print fa-action-md"></i>
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-2 col-md-3 form-group">
+            <label class="col-form-label"><b> رمز المجموعة </b></label>
+          </div>
+          <div class="col-lg-3 col-md-4 form-group">
+            <app-dropdown-list
+              [selectedItemId]="itemGroupId" [list]="groups" 
+              palceholder="إختر الوحدة" [busyLoading]="dropdownsLoading"
+              idField="itemGroupId" textField="itemGroupName" 
+              pageSize="5" [isRequired]="false"
+              (onSelect)="selectItemGroupId($event)"> 
+            </app-dropdown-list>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group flex">
+            <label class="checkbox-container margin-top-5">
+              <input type="checkbox" id="itemsOnly" name="chkHasBalance" [(ngModel)]="chkHasBalance">
+              <span class="checkmark"></span>
+            </label>
+            <label for="itemsOnly" class="col-form-label margin-right-15"> عرض الأصناف التى لها رصيد فقط
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group flex">
+            <label class="checkbox-container margin-top-5">
+              <input type="checkbox" id="emptyCells" name="chkAddEmptyColumn" [(ngModel)]="chkAddEmptyColumn">
+              <span class="checkmark"></span>
+            </label>
+            <label for="emptyCells" class="col-form-label margin-right-15">إدراج خانات فارغة للكميات لإجراء عملية الجرد
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <label><b> طريقة العرض </b></label>
+        </div>
+        <div class="row">
+          <div class="form-group custom-control custom-radio">
+            <input type="radio" class="custom-control-input" id="byGroups" name="showWay" [checked]="rdGrouped" (change)="checkRdGrouped()">
+            <label class="custom-control-label" for="byGroups"> بواسطة المجموعات
+            </label>
+          </div>
+          <div class="form-group custom-control custom-radio">
+            <input type="radio" class="custom-control-input" id="allItems" name="showWay" [checked]="rdAll" (change)="checkRdAll()">
+            <label class="custom-control-label" for="allItems"> كل الأصناف </label>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

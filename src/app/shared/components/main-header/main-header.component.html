@@ -1,0 +1,23 @@
+<div class="header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6">
+                <p class="application-title ellipsis"><i class="application-icon fas fa-warehouse"></i>برنامج المستودعات</p>
+            </div>
+            <div class="col-6">
+                <div class="user-account-wrapper">
+                    <div class="user-account dropdown">
+                        <a class="user-name clickable" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{currentUserName}} 
+                            <i class="fa fa-sort-down margin-right-5"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" [routerLink]="['/pages/change-password']"><i class="fa fa-key margin-left-10"></i>تعديل كلمة المرور</a>
+                            <a class="dropdown-item clickable" (click)="logout()"><i class="fa fa-power-off margin-left-10"></i>تسجيل الخروج</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
